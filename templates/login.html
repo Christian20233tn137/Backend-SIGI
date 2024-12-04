@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar Sesión</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/login.css">
+</head>
+<body class="fondo">
+<img src="img/fondo1.png" alt="Fondo" class="background">
+<div class="login-container">
+    <div class="login-box">
+        <i class="fas fa-user-circle user-icon"></i>
+        <form class="login-form">
+            <div class="form-group">
+                <label for="email">CORREO ELECTRÓNICO*</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="password">CONTRASEÑA*</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <div class="forgot-password">
+                <a href="RecoverPass.html">¿Olvidaste tu contraseña?</a>
+            </div>
+            <button type="submit" class="login-button">INICIAR SESIÓN</button>
+        </form>
+    </div>
+</div>
+<script src="js/login.js"></script>
+</body>
+</html>

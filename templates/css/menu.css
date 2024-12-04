@@ -1,0 +1,117 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f5f5f5;
+}
+
+.background{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1; /* Envía la imagen al fondo */
+}
+
+/*Estilos icono salida */
+.logout-icon {
+    text-decoration: none;
+    color: #ffffff;
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center; /* Centra verticalmente el icono y el texto */
+}
+
+.logout-icon i {
+    margin-right: 5px;
+    font-size: 1.7rem;
+}
+
+.logout-icon:hover {
+    color: #07f686;
+}
+ 
+
+.header {
+    background-color: #005D57;
+    color: white;
+    padding: 10px;
+    text-align: center;
+    position: relative;
+}
+
+.header .logout-icon  {
+    position: absolute;
+    right: 10px;
+    top: 60px;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.header .user-icon {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: calc(100vh - 120px); /* Resta espacio del header y footer */
+}
+
+.actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+}
+
+.action-card {
+    background-color: #008A7D;
+    color: white;
+    text-align: center;
+    padding: 20px;
+    border-radius: 8px;
+    width: 150px;
+    height: 150px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease-in-out;
+    text-decoration: none;
+}
+
+.action-card:hover {
+    transform: scale(1.05);
+}
+
+.action-card i {
+    font-size: 50px;
+    margin-bottom: 10px;
+    color: white;
+}
+
+.action-button {
+    background-color: #66AFA3;
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 15px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+
+
+.footer {
+    background-color: #008A7D;
+    height: 50px;
+    width: 100%;
+}

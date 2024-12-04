@@ -1,0 +1,140 @@
+/* Estilo base: Escritorio */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f5f5f5;
+}
+
+.background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1; /* Envía la imagen al fondo */
+}
+
+.header {
+    background-color: #005D57;
+    color: white;
+    padding: 10px;
+    text-align: center;
+    position: relative;
+}
+
+.header .menu-icon {
+    position: absolute;
+    left: 10px;
+    top: 10px;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.header .user-icon {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.container {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 60px;
+}
+
+.actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+}
+
+.action-card {
+    width: 150px;
+    height: 150px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.action-card:hover {
+    transform: scale(1.05);
+}
+
+.action-card i {
+    font-size: 50px;
+    margin-bottom: 10px;
+    color: white;
+}
+
+.action-button {
+    background-color: #66AFA3;
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 15px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.footer {
+    background-color: #008A7D;
+    height: 50px;
+    width: 100%;
+    position: relative;
+    z-index: 1;
+}
+
+/* Mobile (pantallas pequeñas) */
+@media (max-width: 768px) {
+    .header .menu-icon, .header .user-icon {
+        font-size: 16px;
+    }
+
+    .container {
+        height: auto; /* Ajusta la altura según el contenido */
+        padding: 20px;
+    }
+
+    .actions {
+        gap: 10px;
+    }
+
+    .action-card {
+        width: 120px;
+        height: 120px;
+        padding: 15px;
+    }
+
+    .action-card i {
+        font-size: 40px;
+    }
+
+    .action-button {
+        font-size: 12px;
+    }
+}
+
+/* Tablets (pantallas medianas) */
+@media (max-width: 1024px) {
+    .header .menu-icon, .header .user-icon {
+        font-size: 18px;
+    }
+
+    .actions {
+        gap: 15px;
+    }
+
+    .action-card {
+        width: 130px;
+        height: 130px;
+    }
+
+    .action-card i {
+        font-size: 45px;
+    }
+}

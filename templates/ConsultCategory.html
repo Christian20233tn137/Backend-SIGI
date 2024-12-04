@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consultar Categorías</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/ConsultCategory.css">
+</head>
+
+
+<body>
+<img src="img/fondo1.png" alt="Fondo" class="background">
+
+
+<!-- Barra lateral -->
+<div class="sidebar">
+    <ul class="menu">
+        <a class="menu" href="Menu.html">
+            <li class="menu-item">
+                <i class="icon fa fa-home"></i>
+                <span>Menú principal</span>
+            </li>
+        </a>
+        <a class="menu" href="ConsultCategory.html">
+            <li class="menu-item">
+                <i class="icon fas fa-th-large"></i>
+                <span>Categorías</span>
+            </li>
+        </a>
+        <a class="menu" href="ConsultProduct.html">
+            <li class="menu-item">
+                <i class="icon fas fa-box"></i>
+                <span>Productos</span>
+            </li>
+        </a>
+        <a class="menu" href="ConsultProvide.html">
+            <li class="menu-item">
+                <i class="icon fas fa-truck"></i>
+                <span>Proveedores</span>
+            </li>
+        </a>
+        <a class="menu" href="ConsultarUsuarios.html">
+            <li class="menu-item">
+                <i class="icon fas fa-users"></i>
+                <span>Usuarios</span>
+            </li>
+        </a>
+        <a href="login.html" class="menu">
+            <li class="menu-item">
+                <i class="icon fas fa-sign-out-alt"></i>
+                <span>Salir</span>
+            </li>
+        </a>
+    </ul>
+    <div class="profile">
+        <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="Profile Picture">
+        <div>
+            <p>Nombre del usuario</p>
+            <small>Cuenta Free</small>
+        </div>
+    </div>
+</div>
+
+
+<div class="form-container">
+    <div class="form-header">
+        <h2>CONSULTAR CATEGORÍAS</h2>
+    </div>
+    <div class="search-bar">
+        <input type="text" id="searchInput" placeholder="Buscar...">
+        <button class="search-button"><i class="fas fa-search"></i></button>
+        <button class="plus-button" id="addCategoryButton"><i class="fas fa-plus"></i> Agregar</button>
+    </div>
+
+
+    <!-- Modal -->
+    <div class="modal" id="categoryModal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>REGISTRO DE CATEGORÍA</h2>
+                <button class="close-modal" id="closeModalButton">X</button>
+            </div>
+            <div class="modal-body">
+                <form id="categoryForm">
+                    <input type="hidden" id="categoryId">
+                    <div class="form-group">
+                        <input type="text" id="categoryName" name="nombre" placeholder="Nombre de la categoría" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="categoryDescription" name="descripcion" placeholder="Descripción de la categoría" required>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="registrar" id="registerCategoryButton" type="button">Registrar</button>
+                <button class="cancelar" id="canelarButton">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Tabla -->
+    <main class="content">
+        <table class="provider-table" id="states-table">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>Nombre</th>
+                <th>Descripción</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+            </tr>
+            </thead>
+            <tbody>
+            <!-- Contenido dinámico -->
+            </tbody>
+        </table>
+    </main>
+</div>
+
+
+<script src="js/cosultCategory.js"></script>
+</body>
+
+
+</html>
+
