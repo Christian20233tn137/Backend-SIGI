@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', function () {
         fetch("http://localhost:8080/categorias/all",{
             method: "GET",
             headers:{
-                "Authorization": "Bearer "+token, // Reemplaza <tu-token-aquí> con tu token
+                "Authorization": "Bearer "+token, 
                 "Content-Type": "application/json", // Opcional, según lo que requiera tu API
             }
         })
@@ -78,7 +78,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 } else {
                     alert('Error al cargar las categorías.');
                 }
-            })
+            })  
             .catch(error => {
                 console.error('Error al obtener los datos:', error);
             });
@@ -105,32 +105,31 @@ document.addEventListener('DOMContentLoaded', function () {
     // Función para actualizar el estado de la categoría (Activar/Desactivar)
     function toggleCategoryStatus(id, row, statusCell, toggleButton) {
         const newStatus = toggleButton.textContent === 'Activar' ? true : false;
-        const updatedCategory = { status: newStatus };
-
-
-        fetch(`${API_URL}/${id}`, {
+    
+        fetch('http://localhost:8080/categorias/cambiar-estado', {
             method: 'PUT',
             headers: {
+                "Authorization": "Bearer "+token, 
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(updatedCategory)
+            body: JSON.stringify({ id: id, id: id }) // Incluye tanto el id como el status
         })
-            .then(response => response.json())
-            .then(data => {
-                if (data.type === "SUCCESS") {
-                    statusCell.textContent = newStatus ? 'Activo' : 'Inactivo';
-                    toggleButton.textContent = newStatus ? 'Desactivar' : 'Activar';
-                    toggleButton.className = `btn btn-sm ${newStatus ? 'btn-danger' : 'btn-success'}`;
-                } else {
-                    alert('Error al actualizar el estado de la categoría');
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('Hubo un problema al cambiar el estado de la categoría');
-            });
+        .then(response => {
+            if (response.ok) {
+                // Cambiar el texto y clase del botón según el nuevo estado
+                statusCell.textContent = newStatus ? 'Activo' : 'Inactivo';
+                toggleButton.className = `btn btn-sm ${newStatus ? 'btn-danger' : 'btn-success'}`;
+                toggleButton.textContent = newStatus ? 'Desactivar' : 'Activar';
+            } else {
+                alert('Error al cambiar el estado de la categoría.');
+            }
+        })
+        .catch(error => {
+            console.error('Error al cambiar el estado:', error);
+            alert('Hubo un problema al cambiar el estado de la categoría.');
+        });
     }
-
+    
 
 
 
@@ -175,10 +174,12 @@ document.addEventListener('DOMContentLoaded', function () {
             description: categoryDescription
         };
 
+
         // Enviar los datos al servidor con fetch (POST)
         fetch('http://localhost:8080/categorias', {
             method: 'POST',
             headers: {
+                "Authorization": "Bearer "+token, 
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(categoryData) // Convertir el objeto a JSON
@@ -201,7 +202,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 loadTable(); // Actualizar la tabla después de agregar la categoría
             })
             .catch(error => {
-                // Si hubo un error en la solicitud o en la respuesta
+                // Si hubo un error en la solicitud o en la respuestax`
                 alert(error.message); // Mostrar mensaje de error
                 console.error('Error al registrar la categoría:', error);
             });
