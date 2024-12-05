@@ -8,77 +8,75 @@
     <link rel="stylesheet" href="css/ConsultProduct.css">
 </head>
 <body>
-<img src="img/fondo1.png" alt="Fondo" class="background">
+    <img src="img/fondo1.png" alt="Fondo" class="background">
 
-<!-- Barra lateral -->
-<div class="sidebar">
-    <ul class="menu">
-        <a class="menu" href="Menu.html">
-            <li  class="menu-item">
-                <i class="icon fa fa-home"></i>
-                <span>Menu principal</span>
-            </li>
-        </a>
-        <a class="menu" href="ConsultCategory.html">
-            <li class="menu-item">
-                <i class="icon fas fa-th-large"></i>
-                <span>Categorías</span>
-            </li>
-        </a>
-        <a class="menu" href="ConsultProduct.html">
-            <li class="menu-item">
-                <i class="icon fas fa-box"></i>
-                <span>Productos</span>
-            </li>
-        </a>
-        <a class="menu" href="ConsultProvide.html">
-            <li class="menu-item">
-                <i class="icon fas fa-truck"></i>
-                <span>Proveedores</span>
-            </li>
-        </a>
-        <a class="menu" href="ConsultarUsuarios.html">
-            <li class="menu-item">
-                <i class="icon fas fa-users"></i>
-                <span>Usuarios</span>
-            </li>
-        </a>
-        <a href="login.html" class="menu">
-            <li class="menu-item">
-                <i class=" icon fas fa-sign-out-alt"></i>
-                <span>Salir</span>
-            </li>
-        </a>
-    </ul>
-    <div class="profile">
-        <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="Profile Picture">
-        <div>
-            <p>Nombre del usuario</p>
-            <small>Cuenta Free</small>
+    <!-- Barra lateral -->
+    <div class="sidebar">
+        <ul class="menu">
+            <a class="menu" href="Menu.html">
+                <li class="menu-item">
+                    <i class="icon fa fa-home"></i>
+                    <span>Menu principal</span>
+                </li>
+            </a>
+            <a class="menu" href="ConsultCategory.html">
+                <li class="menu-item">
+                    <i class="icon fas fa-th-large"></i>
+                    <span>Categorías</span>
+                </li>
+            </a>
+            <a class="menu" href="ConsultProduct.html">
+                <li class="menu-item">
+                    <i class="icon fas fa-box"></i>
+                    <span>Productos</span>
+                </li>
+            </a>
+            <a class="menu" href="ConsultProvide.html">
+                <li class="menu-item">
+                    <i class="icon fas fa-truck"></i>
+                    <span>Proveedores</span>
+                </li>
+            </a>
+            <a class="menu" href="ConsultarUsuarios.html">
+                <li class="menu-item">
+                    <i class="icon fas fa-users"></i>
+                    <span>Usuarios</span>
+                </li>
+            </a>
+            <a href="login.html" class="menu">
+                <li class="menu-item">
+                    <i class="icon fas fa-sign-out-alt"></i>
+                    <span>Salir</span>
+                </li>
+            </a>
+        </ul>
+        <div class="profile">
+            <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="Profile Picture">
+            <div>
+                <p>Nombre del usuario</p>
+                <small>Cuenta Free</small>
+            </div>
         </div>
     </div>
-</div>
-<br>
 
-
-<div class="form-container">
-    <div class="form-header">
-        <h2>CONSULTAR PRODUCTOS</h2>
-    </div>
-    <form class="registration-form">
-        <div class="search-bar">
-            <input type="text" id="searchInput" placeholder="Buscar..." />
-            <button class="search-button"><i class="fas fa-search"></i></button>
-            <button class="plus-button"  id="registerProductButton"><i class="fas fa-plus"></i> Agregar</button>
-
-
+    <!-- Formulario -->
+    <div class="form-container">
+        <div class="form-header">
+            <h2>CONSULTAR PRODUCTOS</h2>
+        </div>
+        <form class="registration-form">
+            <div class="search-bar">
+                <input type="text" id="searchInput" placeholder="Buscar...">
+                <button class="search-button"><i class="fas fa-search"></i></button>
+                <button class="plus-button" id="addProductButton"><i class="fas fa-plus"></i> Agregar</button>
+            </div>
 
             <!-- Modal -->
-            <div class="modal">
+            <div class="modal" id="productModal" style="display: none;">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h2>REGISTRO DE PRODUCTO</h2>
-                        <button class="close-modal">X</button>
+                        <button class="close-modal" id="closeModalButton">X</button>
                     </div>
                     <div class="modal-body">
                         <form id="productForm">
@@ -94,7 +92,7 @@
 
                             <div class="form-group">
                                 <label for="categoria">Categoría</label>
-                                <select id="categoriaBuscar" name="categoria" required>
+                                <select id="categoryId" name="categoria" required>
                                     <option value="">Cargando categorías...</option>
                                 </select>
                             </div>
@@ -113,38 +111,34 @@
                     </div>
 
                     <div class="modal-footer">
-                        <button class="close-modal" id="cerrarButton">Cerrar</button>
+                        <button class="close-modal" id="closeModalButtonFooter">Cerrar</button>
                         <button class="registrar" id="registerProductButton">Registrar</button>
                     </div>
                 </div>
             </div>
-            <br>
-        </div>
-        <!-- Table -->
-        <main class="content">
-            <table class="productos-table" id="productos-table">
-                <thead>
-                <tr>
-                    <th>NOMBRE</th>
-                    <th>CANTIDAD</th>
-                    <th>CATEGORIA</th>
-                    <th>PRECIO UNITARIO</th>
-                    <th>PROVEEDOR</th>
-                    <th>ESTADO</th>
-                    <th>GESTIONAR</th>
-                </tr>
-                </thead>
-                <tbody>
-                <!-- Contenido dinámico -->
-                </tbody>
-            </table>
-        </main>
-</div>
-</div>
-<br>
-</form>
-</div>
 
-<script src="js/consultProduct.js"></script>
+            <!-- Tabla -->
+            <main class="content">
+                <table class="productos-table" id="productos-table">
+                    <thead>
+                        <tr>
+                            <th>NOMBRE</th>
+                            <th>CANTIDAD</th>
+                            <th>CATEGORÍA</th>
+                            <th>PRECIO UNITARIO</th>
+                            <th>PROVEEDOR</th>
+                            <th>ESTADO</th>
+                            <th>GESTIONAR</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Contenido dinámico -->
+                    </tbody>
+                </table>
+            </main>
+        </form>
+    </div>
+
+    <script src="js/consultProduct.js"></script>
 </body>
 </html>
