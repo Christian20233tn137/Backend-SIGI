@@ -2,9 +2,17 @@ document.addEventListener('DOMContentLoaded', function () {
     // URL base de la API
     const API_URL = 'http://localhost:8080/producto';
 
+    const token = localStorage.getItem('authToken');
+    console.log(token);
+
     // Función para obtener datos de la API y llenar la tabla
     function loadTable() {
-        fetch("http://localhost:8080/categorias/all")
+        fetch("http://localhost:8080/producto/all", {
+            headers: {
+                "Authorization": "Bearer " + token,
+                "Content-Type": "application/json"
+            }
+        })
             .then(response => response.json())
             .then(data => {
                 if (data.type === "SUCCESS") {
@@ -91,7 +99,20 @@ document.addEventListener('DOMContentLoaded', function () {
         document.querySelector('.modal').style.display = 'block';
     }
 
-    // Ocultar el modal y el fondo
+    //Mostrar categorias a la hora de registrar
+
+    function showCategory(){
+        document.querySelectorById('categoriaBuscar')
+        fetch("http://localhost:8080/categorias/activas", {
+        headers: {
+            
+        }
+        
+        })
+            
+    }
+
+    // Ocultar el modal y el fondo  
     function closeModal() {
         document.querySelector('.modal').style.display = 'none';
     }
@@ -147,7 +168,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
         fetch(API_URL, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: {
+                "Authorization": "Bearer " + token, 
+                'Content-Type': 'application/json' },
             body: JSON.stringify(productData)
         })
             .then(response => response.json())

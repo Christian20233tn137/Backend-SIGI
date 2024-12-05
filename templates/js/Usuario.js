@@ -1,137 +1,183 @@
-// Usuario.js
+document.addEventListener('DOMContentLoaded', function () {
+    // URL base de la API
+    const API_URL = 'http://localhost:8080/usuario';
 
-// Base URL de tu API
-const API_URL = "http://localhost:8080/usuario";
+    const token = localStorage.getItem('authToken');
+    console.log(token)
 
-// Cargar usuarios al cargar la página
-document.addEventListener("DOMContentLoaded", () => {
-    fetchUsuarios();
-});
+    // Función para obtener datos de la API y llenar la tabla
+    function loadTable() {
+        fetch(API_URL, {
+            method: "GET",
+            headers: {
+                "Authorization": "Bearer " + token,
+                "Content-Type": "application/json"
+            }
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.type === "SUCCESS") {
+                    const tableBody = document.querySelector('#states-table tbody');
+                    tableBody.innerHTML = ''; // Limpiar la tabla antes de llenarla
+                    data.result.forEach((usuario, index) => {
+                        const row = document.createElement('tr');
 
-// Función para obtener todos los usuarios
-async function fetchUsuarios() {
-    try {
-        const response = await fetch(API_URL); 
-        if (response.ok) {
-            const usuarios = await response.json();
-            populateTable(usuarios);
-        } else {
-            console.error("Error al obtener usuarios:", response.statusText);
-        }
-    } catch (error) {
-        console.error("Error al conectar con el backend:", error);
+                        // Columna Nombre
+                        const nameCell = document.createElement('td');
+                        nameCell.textContent = usuario.name; 
+                        row.appendChild(nameCell);
+
+                        // Columna Apellidos
+                        const lastNameCell = document.createElement('td');
+                        lastNameCell.textContent = usuario.lastName; 
+                        row.appendChild(lastNameCell);
+
+                        // Columna Teléfono
+                        const phoneCell = document.createElement('td');
+                        phoneCell.textContent = usuario.phone; 
+                        row.appendChild(phoneCell);
+
+                         // Columna Correo
+                         const emailCell = document.createElement('td');
+                         emailCell.textContent = usuario.email; 
+                         row.appendChild(emailCell);
+
+                        // Columna Estado
+                        const statusCell = document.createElement('td');
+                        statusCell.textContent = usuario.status ? 'Activo' : 'Inactivo'; 
+                        row.appendChild(statusCell);
+
+                        // Columna Acciones
+                        const actionsCell = document.createElement('td');
+
+                        // Botón de Editar
+                        const editButton = document.createElement('button');
+                        editButton.className = 'btn btn-primary btn-sm mr-2';
+                        editButton.textContent = 'Editar';
+                        editButton.addEventListener('click', function () {
+                            openEditModal(usuario.id, usuario.name, usuario.lastName, usuario.phone, usuario.email); 
+                        });
+                        actionsCell.appendChild(editButton);
+
+                        // Botón de Activar/Desactivar
+                        const toggleButton = document.createElement('button');
+                        toggleButton.className = `btn btn-sm ${usuario.status ? 'btn-danger' : 'btn-success'}`; 
+                        toggleButton.textContent = usuario.status ? 'Desactivar' : 'Activar'; 
+                        toggleButton.addEventListener('click', function () {
+                            toggleCategoryStatus(usuario.id, row, statusCell, toggleButton); 
+                        });
+                        actionsCell.appendChild(toggleButton);
+
+                        row.appendChild(actionsCell);
+                        tableBody.appendChild(row);
+                    });
+                } else {
+                    alert('Error al cargar los usuarios.');
+                }
+            })
+            .catch(error => {
+                console.error('Error al obtener los datos:', error);
+            });
     }
-}
 
-// Poblar la tabla con usuarios
-function populateTable(usuarios) {
-    const tbody = document.querySelector(".provider-table tbody");
-    tbody.innerHTML = ""; // Limpiar contenido previo
-    usuarios.forEach((usuario) => {
-        const tr = document.createElement("tr");
-        tr.innerHTML = `
-            <td>${usuario.nombre}</td>
-            <td>${usuario.apellidos}</td>
-            <td>${usuario.telefono}</td>
-            <td>${usuario.correo}</td>
-            <td>${usuario.estado ? "Activo" : "Inactivo"}</td>
-            <td>
-                <button class="edit-button" data-id="${usuario.id}">Editar</button>
-                <button class="delete-button" data-id="${usuario.id}">Eliminar</button>
-            </td>
-        `;
-        tbody.appendChild(tr);
+
+    //Abrir modal de edicion
+    function openEditModal(name,lastName, phone, email, password, password2){
+        document.getElementById("usuarioName").value = name
+        document.getElementById("usuarioLastName").value = lastName
+        document.getElementById("usuarioPhone").value = phone
+        document.getElementById("usuarioEmail").value = email
+        document.getElementById("usuarioPassword").value = password
+        document.getElementById("usuarioPasswordConfirme").value = password2
+        document.getElementById('usuarioModel').style.display= 'block';
+    }
+    
+
+    //Abrir modal para nueva categoria 
+    document.getElementById('addProduct').addEventListener('click', function () {
+        document.getElementById('usuarioName').value = ''; // Limpiar ID para nuevo registro
+        document.getElementById('usuarioLastName').value = '';
+        document.getElementById('usuarioPhone').value = '';
+        document.getElementById('usuarioEmail').value = '';
+        document.getElementById('usuarioPassword').value = '';
+        document.getElementById('usuarioPasswordConfirm').value = '';
+        document.getElementById('usuarioModal').style.display = 'block';
     });
 
-    // Asignar eventos a los botones de gestionar
-    document.querySelectorAll(".edit-button").forEach((btn) =>
-        btn.addEventListener("click", handleEdit)
-    );
-    document.querySelectorAll(".delete-button").forEach((btn) =>
-        btn.addEventListener("click", handleDelete)
-    );
-}
 
-// Función para manejar la creación de un usuario
-document.querySelector(".registrar").addEventListener("click", async (e) => {
-    e.preventDefault();
-    const usuario = gatherFormData();
-    if (validateForm(usuario)) {
-        try {
-            const response = await fetch(API_URL, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(usuario),
-            });
-            if (response.ok) {
-                alert("Usuario registrado exitosamente.");
-                fetchUsuarios(); // Refrescar lista
-            } else {
-                console.error("Error al registrar usuario:", response.statusText);
-            }
-        } catch (error) {
-            console.error("Error al conectar con el backend:", error);
+    
+    //Registrar una nueva categoria
+    document.getElementById("registerCategoryButton").addEventListener("click", function (event) {
+        // Evitar que el formulario se envíe automáticamente
+        event.preventDefault();
+
+        // Obtener los valores de los campos de entrada
+        const usuarioName = document.getElementById('usuarioName').value;
+        const usuarioLastName = document.getElementById('usuarioLastName').value;
+        const usuarioPhone = document.getElementById('usuarioPhone').value;
+        const usuarioEmail = document.getElementById('usuarioEmail').value;
+        const usuarioPassword = document.getElementById('usuarioPassword').value;
+        const usuarioPasswordConfirm = document.getElementById('usuarioPasswordConfirm').value;
+
+        // Validación simple
+        if (!usuarioName || !usuarioLastName || usuarioPhone || usuarioEmail || usuarioPassword || usuarioPasswordConfirm) {
+            alert('Por favor, complete todos los campos.');
+            return; // Si no están completos, no continua con el envío
         }
-    }
+
+        // Crear objeto con los datos a enviar
+        const usuarioData = {
+            name: usuarioName,
+            lastName: usuarioLastName,
+            email: usuarioEmail,
+            telephone: usuarioPhone,
+            password: usuarioPassword
+        };
+
+
+        // Enviar los datos al servidor con fetch (POST)
+        fetch('http://localhost:8080/usuario', {
+            method: 'POST',
+            headers: {
+                "Authorization": "Bearer "+token, 
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(usuarioData) // Convertir el objeto a JSON
+        })
+            .then(response => {
+                if (response.ok) {
+                    // Si la respuesta HTTP fue exitosa (status 200-299)
+                    return response.json(); // Parsear el cuerpo de la respuesta como JSON
+                } else {
+                    throw new Error('Error al registrar el usuario');
+                }
+            })
+            .then(data => {
+                // Aquí podemos manejar la respuesta procesada como JSON
+                alert('Categoría registrada exitosamente');
+                // Cerrar el modal y limpiar los campos
+                document.getElementById('usuarioName').value = ''; // Limpiar ID para nuevo registro
+                document.getElementById('usuarioLastName').value = '';
+                document.getElementById('usuarioPhone').value = '';
+                document.getElementById('usuarioEmail').value = '';
+                document.getElementById('usuarioPassword').value = '';
+                document.getElementById('usuarioPasswordConfirm').value = '';
+                loadTable(); // Actualizar la tabla después de agregar la categoría
+            })
+            .catch(error => {
+                // Si hubo un error en la solicitud o en la respuestax`
+                alert(error.message); // Mostrar mensaje de error
+                console.error('Error al registrar la categoría:', error);
+            });
+    });
+
+
+
+    //Cancelar el modal
+    document.getElementById('cancelarButton').addEventListener("click", () => {
+        document.getElementById('usuarioModal').style.display = 'none';
+    })
+
+
+
 });
-
-// Función para manejar la edición de un usuario
-async function handleEdit(e) {
-    const id = e.target.dataset.id;
-    const usuario = gatherFormData();
-    try {
-        const response = await fetch(`${API_URL}/${id}`, {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(usuario),
-        });
-        if (response.ok) {
-            alert("Usuario actualizado exitosamente.");
-            fetchUsuarios();
-        } else {
-            console.error("Error al actualizar usuario:", response.statusText);
-        }
-    } catch (error) {
-        console.error("Error al conectar con el backend:", error);
-    }
-}
-
-// Función para manejar la eliminación de un usuario
-async function handleDelete(e) {
-    const id = e.target.dataset.id;
-    if (confirm("¿Estás seguro de que deseas eliminar este usuario?")) {
-        try {
-            const response = await fetch(`${API_URL}/${id}`, {
-                method: "DELETE",
-            });
-            if (response.ok) {
-                alert("Usuario eliminado exitosamente.");
-                fetchUsuarios();
-            } else {
-                console.error("Error al eliminar usuario:", response.statusText);
-            }
-        } catch (error) {
-            console.error("Error al conectar con el backend:", error);
-        }
-    }
-}
-
-// Recopilar datos del formulario
-function gatherFormData() {
-    return {
-        nombre: document.querySelector("input[name='nombre']").value,
-        apellidos: document.querySelector("input[name='apellidos']").value,
-        telefono: document.querySelector("input[name='telefono']").value,
-        correo: document.querySelector("input[name='correo']").value,
-        contraseña: document.querySelector("input[name='contraseña']").value,
-    };
-}
-
-// Validar datos del formulario
-function validateForm(usuario) {
-    if (!usuario.nombre || !usuario.apellidos || !usuario.telefono || !usuario.correo || !usuario.contraseña) {
-        alert("Todos los campos son obligatorios.");
-        return false;
-    }
-    return true;
-}
