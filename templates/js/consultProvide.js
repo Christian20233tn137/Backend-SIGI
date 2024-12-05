@@ -49,6 +49,15 @@ document.addEventListener('DOMContentLoaded', function () {
             .catch(error => console.error('Error al cargar datos:', error));
     }
 
+    //cerrar modal
+    document.getElementById('closeModalButton').addEventListener("click", ()=>{
+        document.getElementById('modalProvee').style.display = 'none';
+    })
+
+    //cerrar modal
+    document.getElementById('closeModal').addEventListener("click", ()=>{
+        document.getElementById('modalProvee').style.display = 'none';
+    })
     // Abrir modal para editar
     function openEditModal(id) {
         fetch(`${API_URL}/${id}`, {
