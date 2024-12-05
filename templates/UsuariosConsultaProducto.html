@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consultar Usuarios</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/ConsultarUsuarioProducto.css">
+</head>
+<body>
+    <img src="img/fondo1.png" alt="Fondo" class="background">
+
+    <!-- Barra lateral -->
+    <div class="sidebar">
+       <ul class="menu">
+        
+         <a class="menu" href="EditarPerfilUsuario.html">
+            <li class="menu-item">
+                <i class="icon fas fa-user-edit"></i>
+                <span>Editar Perfil</span>
+            </li>
+         </a> 
+
+        
+         <a href="login.html" class="menu">
+            <li class="menu-item">
+                <i class=" icon fas fa-sign-out-alt"></i>
+                <span>Salir</span>
+            </li>
+         </a>
+       </ul>
+       <div class="profile">
+           <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="Profile Picture">
+           <div>
+               <p>Nombre del usuario</p>
+               <small>Cuenta Free</small>
+           </div>
+       </div>
+   </div>
+   <br>
+
+   <div class="form-container">
+       <div class="form-header">
+           <h2>CONSULTAR PRODUCTOS</h2>
+       </div>
+       <form class="registration-form">
+        <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="Buscar..." />
+            <button class="search-button"><i class="fas fa-search"></i></button>
+            <br>
+        </div>
+        <!-- Table -->
+        <main class="content">
+            <table class="provider-table">
+                <thead>
+                    <tr>
+                        <th>NOMBRE</th>
+                        <th>CATEGORÍA</th>
+                        <th>CANTIDAD</th>
+                        <th>PRECIO UNITARIO</th>
+                    </tr>
+                </thead>
+               <tbody>
+                 <!-- Contenido dinámico -->
+               </tbody>
+            </table>
+        </main>
+    </div>
+           </div>
+           <br> 
+       </form>
+   </div>
+   <script src="js/ConsultasUsuarioProducto.js"></script>
+</body>
+</html>
