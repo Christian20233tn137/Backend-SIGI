@@ -7,11 +7,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Función para obtener datos de la API y llenar la tabla
     function loadTable() {
-        fetch("http://localhost:8080/categorias/all", {
+        fetch(`${API_URL}/all`, {
             method: "GET",
             headers: {
                 "Authorization": "Bearer " + token,
-                "Content-Type": "application/json", // Opcional, según lo que requiera tu API
+                "Content-Type": "application/json"
             }
         })
             .then(response => response.json())
@@ -78,12 +78,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Función para abrir el modal de edición
     function openEditModal(id, name, description) {
-        // Asignar los valores actuales a los campos del formulario de edición
-        document.getElementById('categoryId').value = id;
-        document.getElementById('categoryName').value = name;
-        document.getElementById('categoryDescription').value = description;
-        // Abrir el modal
-        document.getElementById('categoryModal').style.display = 'block';
+        document.getElementById('categoryId').value = id; // Cargar el ID en el formulario
+        document.getElementById('categoryName').value = name; // Cargar el nombre actual
+        document.getElementById('categoryDescription').value = description; // Cargar la descripción actual
+        document.getElementById('categoryModal').style.display = 'block'; // Mostrar el modal
     }
 
     // Función para cerrar el modal
@@ -93,19 +91,18 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Función para actualizar el estado de la categoría (Activar/Desactivar)
     function toggleCategoryStatus(id, row, statusCell, toggleButton) {
-        const newStatus = toggleButton.textContent === 'Activar';
+        const newStatus = toggleButton.textContent === 'Activar' ? true : false;
 
-        fetch('http://localhost:8080/categorias/cambiar-estado', {
+        fetch(`${API_URL}/cambiar-estado`, {
             method: 'PUT',
             headers: {
                 "Authorization": "Bearer " + token,
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ id: id, id: id }) // Incluye tanto el id como el status
+            body: JSON.stringify({ id: id })
         })
             .then(response => {
                 if (response.ok) {
-                    // Cambiar el texto y clase del botón según el nuevo estado
                     statusCell.textContent = newStatus ? 'Activo' : 'Inactivo';
                     toggleButton.className = `btn btn-sm ${newStatus ? 'btn-danger' : 'btn-success'}`;
                     toggleButton.textContent = newStatus ? 'Desactivar' : 'Activar';
@@ -119,96 +116,65 @@ document.addEventListener('DOMContentLoaded', function () {
             });
     }
 
-    // Función para filtrar las filas de la tabla
-    function filterTable() {
-        const input = document.getElementById('searchInput');
-        const filter = input.value.toLowerCase();
-        const rows = document.querySelectorAll('#states-table tbody tr');
-
-        rows.forEach(row => {
-            const cells = row.getElementsByTagName('td');
-            let found = false;
-            for (let i = 0; i < cells.length; i++) {
-                if (cells[i].textContent.toLowerCase().includes(filter)) {
-                    found = true;
-                    break;
-                }
-            }
-            row.style.display = found ? '' : 'none';
-        });
-    }
-
-    //Registrar una nueva categoria
-    document.getElementById("addCategoryButton").addEventListener("click", () => {
-        document.getElementById("categoryModal").style.display = "block";
-    });
-
-    //Cerrar modal
-    document.getElementById("closeModalButton").addEventListener("click", () => {
-        document.getElementById("categoryModal").style.display = "none";
-    });
-
-    document.getElementById("canelarButton").addEventListener("click", () => {
-        document.getElementById("categoryModal").style.display = "none";
-    });
-
-    //Registrar una nueva categoria
-    document.getElementById("registerCategoryButton").addEventListener("click", function (event) {
-        // Evitar que el formulario se envíe automáticamente
+    // Guardar cambios (Crear/Editar)
+    document.getElementById('registerCategoryButton').addEventListener('click', function (event) {
         event.preventDefault();
 
-        // Obtener los valores de los campos de entrada
+        const categoryId = document.getElementById('categoryId').value;
         const categoryName = document.getElementById('categoryName').value;
         const categoryDescription = document.getElementById('categoryDescription').value;
 
-        // Validación simple
         if (!categoryName || !categoryDescription) {
             alert('Por favor, complete todos los campos.');
-            return; // Si no están completos, no continua con el envío
+            return;
         }
 
-        // Crear objeto con los datos a enviar
         const categoryData = {
+            id: categoryId,
             name: categoryName,
             description: categoryDescription
         };
 
-        // Enviar los datos al servidor con fetch (POST)
-        fetch('http://localhost:8080/categorias', {
-            method: 'POST',
+        const method = categoryId ? 'PUT' : 'POST';
+        const endpoint = categoryId ? `${API_URL}` : `${API_URL}`;
+
+        fetch(endpoint, {
+            method: method,
             headers: {
                 "Authorization": "Bearer " + token,
-                'Content-Type': 'application/json'
+                "Content-Type": "application/json"
             },
-            body: JSON.stringify(categoryData) // Convertir el objeto a JSON
+            body: JSON.stringify(categoryData)
         })
             .then(response => {
                 if (response.ok) {
-                    // Si la respuesta HTTP fue exitosa (status 200-299)
-                    return response.json(); // Parsear el cuerpo de la respuesta como JSON
+                    return response.json();
                 } else {
-                    throw new Error('Error al registrar la categoría');
+                    throw new Error('Error al guardar los datos.');
                 }
             })
-            .then(data => {
-                // Aquí podemos manejar la respuesta procesada como JSON
-                alert('Categoría registrada exitosamente');
-                // Cerrar el modal y limpiar los campos
-                document.getElementById('categoryModal').style.display = 'none';
-                document.getElementById('categoryName').value = '';
-                document.getElementById('categoryDescription').value = '';
-                loadTable(); // Actualizar la tabla después de agregar la categoría
+            .then(() => {
+                alert('Categoría guardada exitosamente.');
+                closeEditModal();
+                loadTable();
             })
             .catch(error => {
-                // Si hubo un error en la solicitud o en la respuesta
-                alert(error.message); // Mostrar mensaje de error
-                console.error('Error al registrar la categoría:', error);
+                alert('Error al guardar los datos: ' + error.message);
             });
     });
 
-    // Asignar el evento de búsqueda
-    document.getElementById('searchInput').addEventListener('input', filterTable);
-
     // Inicializar la tabla al cargar la página
     loadTable();
+
+    // Eventos para cerrar el modal
+    document.getElementById('closeModalButton').addEventListener('click', closeEditModal);
+    document.getElementById('canelarButton').addEventListener('click', closeEditModal);
+
+    // Abrir modal para nueva categoría
+    document.getElementById('addCategoryButton').addEventListener('click', function () {
+        document.getElementById('categoryId').value = ''; // Limpiar ID para nuevo registro
+        document.getElementById('categoryName').value = '';
+        document.getElementById('categoryDescription').value = '';
+        document.getElementById('categoryModal').style.display = 'block';
+    });
 });
