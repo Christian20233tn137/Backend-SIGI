@@ -2,15 +2,15 @@ document.addEventListener('DOMContentLoaded', function () {
     // URL base de la API
     const API_URL = 'http://localhost:8080/categorias';
 
-
     const token = localStorage.getItem('authToken');
-    console.log(token)
+    console.log(token);
+
     // Función para obtener datos de la API y llenar la tabla
     function loadTable() {
-        fetch("http://localhost:8080/categorias/all",{
+        fetch("http://localhost:8080/categorias/all", {
             method: "GET",
-            headers:{
-                "Authorization": "Bearer "+token, 
+            headers: {
+                "Authorization": "Bearer " + token,
                 "Content-Type": "application/json", // Opcional, según lo que requiera tu API
             }
         })
@@ -22,35 +22,29 @@ document.addEventListener('DOMContentLoaded', function () {
                     data.result.forEach((category, index) => {
                         const row = document.createElement('tr');
 
-
                         // Columna #
                         const numberCell = document.createElement('th');
                         numberCell.scope = 'row';
                         numberCell.textContent = index + 1;
                         row.appendChild(numberCell);
 
-
                         // Columna Nombre
                         const nameCell = document.createElement('td');
                         nameCell.textContent = category.name;
                         row.appendChild(nameCell);
-
 
                         // Columna Descripción
                         const descriptionCell = document.createElement('td');
                         descriptionCell.textContent = category.description;
                         row.appendChild(descriptionCell);
 
-
                         // Columna Estado
                         const statusCell = document.createElement('td');
                         statusCell.textContent = category.status ? 'Activo' : 'Inactivo';
                         row.appendChild(statusCell);
 
-
                         // Columna Acciones
                         const actionsCell = document.createElement('td');
-
 
                         // Botón de Editar
                         const editButton = document.createElement('button');
@@ -61,7 +55,6 @@ document.addEventListener('DOMContentLoaded', function () {
                         });
                         actionsCell.appendChild(editButton);
 
-
                         // Botón de Activar/Desactivar
                         const toggleButton = document.createElement('button');
                         toggleButton.className = `btn btn-sm ${category.status ? 'btn-danger' : 'btn-success'}`;
@@ -71,19 +64,17 @@ document.addEventListener('DOMContentLoaded', function () {
                         });
                         actionsCell.appendChild(toggleButton);
 
-
                         row.appendChild(actionsCell);
                         tableBody.appendChild(row);
                     });
                 } else {
                     alert('Error al cargar las categorías.');
                 }
-            })  
+            })
             .catch(error => {
                 console.error('Error al obtener los datos:', error);
             });
     }
-
 
     // Función para abrir el modal de edición
     function openEditModal(id, name, description) {
@@ -95,63 +86,71 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('categoryModal').style.display = 'block';
     }
 
-
     // Función para cerrar el modal
     function closeEditModal() {
         document.getElementById('categoryModal').style.display = 'none';
     }
 
-
     // Función para actualizar el estado de la categoría (Activar/Desactivar)
     function toggleCategoryStatus(id, row, statusCell, toggleButton) {
-        const newStatus = toggleButton.textContent === 'Activar' ? true : false;
-    
+        const newStatus = toggleButton.textContent === 'Activar';
+
         fetch('http://localhost:8080/categorias/cambiar-estado', {
             method: 'PUT',
             headers: {
-                "Authorization": "Bearer "+token, 
+                "Authorization": "Bearer " + token,
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({ id: id, id: id }) // Incluye tanto el id como el status
         })
-        .then(response => {
-            if (response.ok) {
-                // Cambiar el texto y clase del botón según el nuevo estado
-                statusCell.textContent = newStatus ? 'Activo' : 'Inactivo';
-                toggleButton.className = `btn btn-sm ${newStatus ? 'btn-danger' : 'btn-success'}`;
-                toggleButton.textContent = newStatus ? 'Desactivar' : 'Activar';
-            } else {
-                alert('Error al cambiar el estado de la categoría.');
+            .then(response => {
+                if (response.ok) {
+                    // Cambiar el texto y clase del botón según el nuevo estado
+                    statusCell.textContent = newStatus ? 'Activo' : 'Inactivo';
+                    toggleButton.className = `btn btn-sm ${newStatus ? 'btn-danger' : 'btn-success'}`;
+                    toggleButton.textContent = newStatus ? 'Desactivar' : 'Activar';
+                } else {
+                    alert('Error al cambiar el estado de la categoría.');
+                }
+            })
+            .catch(error => {
+                console.error('Error al cambiar el estado:', error);
+                alert('Hubo un problema al cambiar el estado de la categoría.');
+            });
+    }
+
+    // Función para filtrar las filas de la tabla
+    function filterTable() {
+        const input = document.getElementById('searchInput');
+        const filter = input.value.toLowerCase();
+        const rows = document.querySelectorAll('#states-table tbody tr');
+
+        rows.forEach(row => {
+            const cells = row.getElementsByTagName('td');
+            let found = false;
+            for (let i = 0; i < cells.length; i++) {
+                if (cells[i].textContent.toLowerCase().includes(filter)) {
+                    found = true;
+                    break;
+                }
             }
-        })
-        .catch(error => {
-            console.error('Error al cambiar el estado:', error);
-            alert('Hubo un problema al cambiar el estado de la categoría.');
+            row.style.display = found ? '' : 'none';
         });
     }
-    
-
-
 
     //Registrar una nueva categoria
     document.getElementById("addCategoryButton").addEventListener("click", () => {
         document.getElementById("categoryModal").style.display = "block";
     });
 
-
-    //Salir
+    //Cerrar modal
     document.getElementById("closeModalButton").addEventListener("click", () => {
         document.getElementById("categoryModal").style.display = "none";
     });
 
-
-    //boton de salir
     document.getElementById("canelarButton").addEventListener("click", () => {
         document.getElementById("categoryModal").style.display = "none";
     });
-
-
-
 
     //Registrar una nueva categoria
     document.getElementById("registerCategoryButton").addEventListener("click", function (event) {
@@ -174,12 +173,11 @@ document.addEventListener('DOMContentLoaded', function () {
             description: categoryDescription
         };
 
-
         // Enviar los datos al servidor con fetch (POST)
         fetch('http://localhost:8080/categorias', {
             method: 'POST',
             headers: {
-                "Authorization": "Bearer "+token, 
+                "Authorization": "Bearer " + token,
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(categoryData) // Convertir el objeto a JSON
@@ -202,15 +200,15 @@ document.addEventListener('DOMContentLoaded', function () {
                 loadTable(); // Actualizar la tabla después de agregar la categoría
             })
             .catch(error => {
-                // Si hubo un error en la solicitud o en la respuestax`
+                // Si hubo un error en la solicitud o en la respuesta
                 alert(error.message); // Mostrar mensaje de error
                 console.error('Error al registrar la categoría:', error);
             });
     });
 
-
+    // Asignar el evento de búsqueda
+    document.getElementById('searchInput').addEventListener('input', filterTable);
 
     // Inicializar la tabla al cargar la página
     loadTable();
 });
-
