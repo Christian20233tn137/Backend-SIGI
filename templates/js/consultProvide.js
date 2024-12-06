@@ -94,8 +94,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Función para abrir el modal de edición
     function openEditModal(provider) {
+<<<<<<< HEAD
+        document.getElementById('providerId').value = provider.id; // Asignar el ID del proveedor al campo oculto
+=======
 
         document.getElementById('providerId').value = provider.id;
+>>>>>>> cf42e82cffdcfc9230973385e195ae300891f059
         document.getElementById('providerName').value = provider.name;
         document.getElementById('providerPhone').value = provider.telefono;
         document.getElementById('providerRFC').value = provider.rfc;
@@ -138,6 +142,21 @@ document.addEventListener('DOMContentLoaded', function () {
 
     document.getElementById('registerProvider').addEventListener('click', function (event) {
         event.preventDefault();
+<<<<<<< HEAD
+
+        const providerId = document.getElementById('providerId').value; // Leer el ID del proveedor
+        const providerData = {
+            id: providerId || null, // Incluir el ID si está presente
+            name: document.getElementById('providerName').value,
+            telefono: document.getElementById('providerPhone').value,
+            rfc: document.getElementById('providerRFC').value,
+            email: document.getElementById('providerEmail').value,
+            direccion: document.getElementById('providerAddress').value,
+            status: true // Nuevo proveedor activo por defecto
+        };
+
+        const method = providerId ? 'PUT' : 'POST'; // Determinar si es una actualización o un nuevo registro
+=======
     
         const providerId = document.getElementById('providerId').value;
         const providerName = document.getElementById('providerName').value;
@@ -163,14 +182,31 @@ document.addEventListener('DOMContentLoaded', function () {
     });
     
     function createProvider(providerData) {
+>>>>>>> cf42e82cffdcfc9230973385e195ae300891f059
         fetch(API_URL, {
-            method: 'POST',
+            method: method,
             headers: {
                 "Authorization": "Bearer " + token,
                 "Content-Type": "application/json"
             },
             body: JSON.stringify(providerData)
         })
+<<<<<<< HEAD
+            .then(response => {
+                if (response.ok) {
+                    alert('Proveedor guardado exitosamente.');
+                    closeEditModal();
+                    loadTable();
+                } else {
+                    alert('Error al guardar el proveedor.');
+                }
+            })
+            .catch(error => {
+                console.error('Error al guardar el proveedor:', error);
+            });
+    });
+
+=======
         .then(response => {
             if (response.ok) {
                 alert('Proveedor registrado exitosamente.');
@@ -211,15 +247,16 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     
     
+>>>>>>> cf42e82cffdcfc9230973385e195ae300891f059
     // Inicializar la tabla al cargar la página
     loadTable();
 
     // Eventos para cerrar el modal
     document.getElementById('closeModalButton').addEventListener('click', closeEditModal);
-    document.getElementById('closeModal').addEventListener('click', closeEditModal);
 
     // Abrir modal para nuevo proveedor
     document.getElementById('addProduct').addEventListener('click', function () {
+        document.getElementById('providerId').value = ''; // Limpiar el ID para nuevo registro
         document.getElementById('providerName').value = '';
         document.getElementById('providerPhone').value = '';
         document.getElementById('providerRFC').value = '';

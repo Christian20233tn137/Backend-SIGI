@@ -10,6 +10,109 @@
     <body>
         <img src="img/fondo1.png" alt="Fondo" class="background">
 
+<<<<<<< HEAD
+    <!-- Barra lateral -->
+    <div class="sidebar">
+       <ul class="menu">
+        <a class="menu" href="Menu.html">
+            <li  class="menu-item">
+                <i class="icon fa fa-home"></i>
+                <span>Menu principal</span>
+            </li>
+         </a>
+         <a class="menu" href="ConsultCategory.html">
+            <li class="menu-item">
+                <i class="icon fas fa-th-large"></i>
+                <span>Categorías</span>
+            </li>
+         </a> 
+         <a class="menu" href="ConsultProduct.html">
+            <li class="menu-item">
+                <i class="icon fas fa-box"></i>
+                <span>Productos</span>
+            </li>
+         </a>
+         <a class="menu" href="ConsultProvide.html">  
+            <li class="menu-item">
+                <i class="icon fas fa-truck"></i>
+                <span>Proveedores</span>
+            </li>
+         </a>
+         <a class="menu" href="ConsultarUsuarios.html">  
+            <li class="menu-item">
+                <i class="icon fas fa-users"></i>
+                <span>Usuarios</span>
+            </li>
+         </a>  
+         <a class="menu" href="EditarPerfilAdmin.html">  
+            <li class="menu-item">
+                <i class="icon fas fa-user-edit"></i>
+                <span>Editar perfil</span>
+            </li>
+         </a>  
+         <a href="login.html" class="menu">
+            <li class="menu-item">
+                <i class=" icon fas fa-sign-out-alt"></i>
+                <span>Salir</span>
+            </li>
+         </a>
+       </ul>
+       <div class="profile">
+           <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="Profile Picture">
+           <div>
+               <p>Nombre del usuario</p>
+               <small>Cuenta Free</small>
+           </div>
+       </div>
+   </div>
+   <br>
+
+   <div class="form-container">
+       <div class="form-header">
+           <h2>CONSULTAR USUARIOS</h2>
+       </div>
+       <form class="registration-form">
+        <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="Buscar..." />
+            <button class="search-button"><i class="fas fa-search"></i></button>
+            <button class="plus-button"  id="addProduct"><i class="fas fa-plus"></i>Agregar</button>
+
+
+    <!-- Modal -->
+    <div class="modal" id="usuarioModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>REGISTRO DE USUARIOS</h2>
+            </div>
+
+            <div  class="modal-body">
+               
+                <form>
+                    <div class="form-group">
+                        <input id="usuarioName" type="text" name="nombre" placeholder="Ingresa el nombre" required>
+                    </div>
+                    <div class="form-group">
+                        <input id="usuarioLastName" type="text" name="apellidos" placeholder="Ingresa tus apellidos" required>
+                    </div>
+                    <div class="form-group">
+                        <input id="usuarioPhone" type="text" name="telefono" placeholder="Ingresa tu telefono" required>
+                    </div>
+                    <div class="form-group">
+                        <input id="usuarioEmail" type="email" name="correo" placeholder="Ingresa tu correo electrónico" required>
+                    </div>
+                    <div class="form-group">
+                        <input id="usuarioPassword" type="password" name="contraseña" placeholder="Contraseña temporal" required>
+                    </div>
+                    <div class="form-group">
+                        <input id="usuarioPasswordConfirm" type="password" name="ConfirmarContraseña" placeholder="Confirmar contraseña" required>
+                    </div>
+                </form>  
+           
+            </div>
+            <div class="modal-footer">
+                <button id="cancelarButton" class="close-modal">Cerrar</button>
+                <button class="registrar">Registrar</button>
+=======
         <!-- Barra lateral -->
         <div class="sidebar">
         <ul class="menu">
@@ -55,6 +158,7 @@
             <div>
                 <p>Nombre del usuario</p>
                 <small>Cuenta Free</small>
+>>>>>>> cf42e82cffdcfc9230973385e195ae300891f059
             </div>
         </div>
     </div>
