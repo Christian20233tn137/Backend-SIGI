@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (data.type === 'SUCCESS') {
                     const tableBody = document.querySelector('#productos-table tbody');
                     tableBody.innerHTML = '';
-                    data.result.forEach(producto => {
+                    data.result.forEach((producto, index) => {
                         const row = document.createElement('tr');
 
                         // Columna #
@@ -26,6 +26,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         numberCell.scope = 'row';
                         numberCell.textContent = index + 1;
                         row.appendChild(numberCell);
+
                         // Columna Nombre
                         const nameCell = document.createElement('td');
                         nameCell.textContent = producto.nombre;
@@ -45,8 +46,6 @@ document.addEventListener('DOMContentLoaded', function () {
                         const precioCell = document.createElement('td');
                         precioCell.textContent = `$${producto.precioUnitario.toFixed(2)}`;
                         row.appendChild(precioCell);
-
-            
 
                         // Columna Estado
                         const statusCell = document.createElement('td');
@@ -110,7 +109,6 @@ document.addEventListener('DOMContentLoaded', function () {
             .catch(error => console.error('Error al cargar las categorías:', error));
     }
 
-
     function openEditModal(producto) {
         document.getElementById('productId').value = producto.id || '';
         document.getElementById('productName').value = producto.nombre || '';
@@ -118,7 +116,6 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('categoryId').value = producto.categorias ? producto.categorias.id : '';
         document.getElementById('cantidad').value = producto.cantidad || '';
 
-        // Cargar categorías y proveedores al abrir el modal
         loadCategories();
 
         document.getElementById('productModal').style.display = 'block';
@@ -162,7 +159,6 @@ document.addEventListener('DOMContentLoaded', function () {
             nombre: productName,
             precioUnitario: parseFloat(precioUnitario),
             categorias: { id: categoryId },
-            proveedores: [{ id: proveedorId }],
             cantidad: parseInt(cantidad, 10),
         };
 
