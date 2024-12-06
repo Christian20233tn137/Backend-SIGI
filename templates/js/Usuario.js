@@ -100,7 +100,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function closeModal(){
-        document.getElementById('usuarioModel').style.display = 'none';
+        document.getElementById('usuarioModal').style.display = 'none';
     }
     
     //Funcion para cambiar el estado de un usuario
@@ -136,7 +136,7 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('registerButton').addEventListener('click', function(event) {
         event.preventDefault();
     
-        const userId = document.getElementById('usedId').value;
+        const userId = document.getElementById('usuarioId').value;
         const usuarioName = document.getElementById('usuarioName').value;
         const usuarioLastName = document.getElementById('usuarioLastName').value;
         const usuarioPhone = document.getElementById('usuarioPhone').value;
@@ -170,7 +170,7 @@ document.addEventListener('DOMContentLoaded', function () {
         .then(response => {
             if (response.ok) {
                 alert('Usuario registrado exitosamente.');
-                closeEditModal();
+                closeModal();
                 loadTable();
             } else {
                 alert('Error al registrar el usuario.');
@@ -195,7 +195,7 @@ document.addEventListener('DOMContentLoaded', function () {
         .then(response => {
             if (response.ok) {
                 alert('Usuario actualizado exitosamente.');
-                closeEditModal();
+                closeModal();
                 loadTable();
             } else {
                 alert('Error al actualizar el usuario.');
@@ -222,7 +222,7 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('usuarioEmail').value = '';
         document.getElementById('usuarioPassword').value = '';
         document.getElementById('usuarioPasswordConfirm').value = '';
-        document.getElementById('modalProvee').style.display = 'block';
+        document.getElementById('usuarioModal').style.display = 'block';
     });
     
 });
