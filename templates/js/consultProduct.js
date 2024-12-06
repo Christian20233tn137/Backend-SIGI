@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
                         // Columna Categoría
                         const categoryCell = document.createElement('td');
-                        categoryCell.textContent = producto.categorias ? producto.categorias.nombre : 'Sin categoría';
+                        categoryCell.textContent = producto.categorias ? producto.categorias.name : 'Sin categoría';
                         row.appendChild(categoryCell);
 
                         // Columna Precio Unitario
@@ -41,14 +41,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         precioCell.textContent = `$${producto.precioUnitario.toFixed(2)}`;
                         row.appendChild(precioCell);
 
-                        // Columna Proveedor
-                        const proveedorCell = document.createElement('td');
-                        if (Array.isArray(producto.proveedores) && producto.proveedores.length > 0) {
-                            proveedorCell.textContent = producto.proveedores.map(p => p.nombre).join(', ');
-                        } else {
-                            proveedorCell.textContent = 'Sin proveedor';
-                        }
-                        row.appendChild(proveedorCell);
+            
 
                         // Columna Estado
                         const statusCell = document.createElement('td');
@@ -102,7 +95,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     data.result.forEach(category => {
                         const option = document.createElement('option');
                         option.value = category.id;
-                        option.textContent = category.nombre;
+                        option.textContent = category.name;
                         categorySelect.appendChild(option);
                     });
                 } else {
@@ -112,43 +105,16 @@ document.addEventListener('DOMContentLoaded', function () {
             .catch(error => console.error('Error al cargar las categorías:', error));
     }
 
-    function loadProviders() {
-        fetch(`${API_URL_PROVEEDORES}/all`, {
-            method: 'GET',
-            headers: {
-                'Authorization': 'Bearer ' + token,
-                'Content-Type': 'application/json',
-            },
-        })
-            .then(response => response.json())
-            .then(data => {
-                if (data.type === 'SUCCESS') {
-                    const providerSelect = document.getElementById('proveedor');
-                    providerSelect.innerHTML = '<option value="">Seleccione un proveedor</option>';
-                    data.result.forEach(provider => {
-                        const option = document.createElement('option');
-                        option.value = provider.id;
-                        option.textContent = provider.nombre;
-                        providerSelect.appendChild(option);
-                    });
-                } else {
-                    alert('Error al cargar los proveedores.');
-                }
-            })
-            .catch(error => console.error('Error al cargar los proveedores:', error));
-    }
 
     function openEditModal(producto) {
         document.getElementById('productId').value = producto.id || '';
-        document.getElementById('productName').value = producto.nombre || '';
+        document.getElementById('productName').value = producto.name || '';
         document.getElementById('precioUnitario').value = producto.precioUnitario || '';
         document.getElementById('categoryId').value = producto.categorias ? producto.categorias.id : '';
         document.getElementById('cantidad').value = producto.cantidad || '';
-        document.getElementById('proveedor').value = producto.proveedores?.[0]?.id || '';
 
         // Cargar categorías y proveedores al abrir el modal
         loadCategories();
-        loadProviders();
 
         document.getElementById('productModal').style.display = 'block';
     }
@@ -184,7 +150,6 @@ document.addEventListener('DOMContentLoaded', function () {
         const productName = document.getElementById('productName').value;
         const precioUnitario = document.getElementById('precioUnitario').value;
         const categoryId = document.getElementById('categoryId').value;
-        const proveedorId = document.getElementById('proveedor').value;
         const cantidad = document.getElementById('cantidad').value;
 
         const producto = {

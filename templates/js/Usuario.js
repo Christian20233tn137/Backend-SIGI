@@ -35,12 +35,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
                         // Columna Apellidos
                         const lastNameCell = document.createElement('td');
-                        lastNameCell.textContent = usuario.lastName; 
+                        lastNameCell.textContent = usuario.lastname; 
                         row.appendChild(lastNameCell);
 
                         // Columna Teléfono
                         const phoneCell = document.createElement('td');
-                        phoneCell.textContent = usuario.phone; 
+                        phoneCell.textContent = usuario.telephone; 
                         row.appendChild(phoneCell);
 
                          // Columna Correo
