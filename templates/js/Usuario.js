@@ -22,6 +22,12 @@ document.addEventListener('DOMContentLoaded', function () {
                     data.result.forEach((usuario, index) => {
                         const row = document.createElement('tr');
 
+                        // Columna #
+                        const numberCell = document.createElement('th');
+                        numberCell.scope = 'row';
+                        numberCell.textContent = index + 1;
+                        row.appendChild(numberCell);
+
                         // Columna Nombre
                         const nameCell = document.createElement('td');
                         nameCell.textContent = usuario.name; 
@@ -55,7 +61,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         editButton.className = 'btn btn-primary btn-sm mr-2';
                         editButton.textContent = 'Editar';
                         editButton.addEventListener('click', function () {
-                            openEditModal(usuario.id, usuario.name, usuario.lastName, usuario.phone, usuario.email); 
+                            openEditModal(usuario); 
                         });
                         actionsCell.appendChild(editButton);
 
@@ -64,7 +70,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         toggleButton.className = `btn btn-sm ${usuario.status ? 'btn-danger' : 'btn-success'}`; 
                         toggleButton.textContent = usuario.status ? 'Desactivar' : 'Activar'; 
                         toggleButton.addEventListener('click', function () {
-                            toggleCategoryStatus(usuario.id, row, statusCell, toggleButton); 
+                            toggleUserStatus(usuario.id, row, statusCell, toggleButton); 
                         });
                         actionsCell.appendChild(toggleButton);
 
@@ -81,103 +87,142 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
 
-    //Abrir modal de edicion
-    function openEditModal(name,lastName, phone, email, password, password2){
-        document.getElementById("usuarioName").value = name
-        document.getElementById("usuarioLastName").value = lastName
-        document.getElementById("usuarioPhone").value = phone
-        document.getElementById("usuarioEmail").value = email
-        document.getElementById("usuarioPassword").value = password
-        document.getElementById("usuarioPasswordConfirme").value = password2
+    //Funcion para abrir el modal de edicion
+    function openEditModal(usuario){
+        document.getElementById('usuarioId').value = usuario.id;
+        document.getElementById("usuarioName").value = usuario.name
+        document.getElementById("usuarioLastName").value = usuario.lastName
+        document.getElementById("usuarioPhone").value = usuario.phone
+        document.getElementById("usuarioEmail").value = usuario.email
+        document.getElementById("usuarioPassword").value = usuario.password
+        document.getElementById("usuarioPasswordConfirm").value = usuario.password2
         document.getElementById('usuarioModel').style.display= 'block';
     }
+
+    function closeModal(){
+        document.getElementById('usuarioModel').style.display = 'none';
+    }
+    
+    //Funcion para cambiar el estado de un usuario
+    function toggleUserStatus(id, statusCell, toggleButton){
+        fetch(`${API_URL}/cambiar-estado`, {
+            method: 'PUT',
+            headers: {
+                "Authorization": "Bearer " + token,
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({id : id})
+        })
+        .then(response => {
+            if (response.ok) {
+                const newStatus = toggleButton.textContent === 'Activar';
+                statusCell.textContent = newStatus ? 'Activo' : 'Inactivo';
+                toggleButton.className = `btn btn-sm ${newStatus ? 'btn-danger' : 'btn-success'}`;
+                toggleButton.textContent = newStatus ? 'Desactivar' : 'Activar';
+            } else {
+                alert('Error al cambiar el estado del usuario.');
+            }
+        })
+        .catch(error => {
+            console.error('Error al cambiar el estado:', error);
+        });
+
+    }
+
     
 
-    //Abrir modal para nueva categoria 
-    document.getElementById('addProduct').addEventListener('click', function () {
-        document.getElementById('usuarioName').value = ''; // Limpiar ID para nuevo registro
-        document.getElementById('usuarioLastName').value = '';
-        document.getElementById('usuarioPhone').value = '';
-        document.getElementById('usuarioEmail').value = '';
-        document.getElementById('usuarioPassword').value = '';
-        document.getElementById('usuarioPasswordConfirm').value = '';
-        document.getElementById('usuarioModal').style.display = 'block';
-    });
-
-
     
-    //Registrar una nueva categoria
-    document.getElementById("registerCategoryButton").addEventListener("click", function (event) {
-        // Evitar que el formulario se envíe automáticamente
+    //Crear o editar
+    document.getElementById('registerButton').addEventListener('click', function(event) {
         event.preventDefault();
-
-        // Obtener los valores de los campos de entrada
+    
+        const userId = document.getElementById('usedId').value;
         const usuarioName = document.getElementById('usuarioName').value;
         const usuarioLastName = document.getElementById('usuarioLastName').value;
         const usuarioPhone = document.getElementById('usuarioPhone').value;
         const usuarioEmail = document.getElementById('usuarioEmail').value;
         const usuarioPassword = document.getElementById('usuarioPassword').value;
-        const usuarioPasswordConfirm = document.getElementById('usuarioPasswordConfirm').value;
-
-        // Validación simple
-        if (!usuarioName || !usuarioLastName || usuarioPhone || usuarioEmail || usuarioPassword || usuarioPasswordConfirm) {
-            alert('Por favor, complete todos los campos.');
-            return; // Si no están completos, no continua con el envío
-        }
-
-        // Crear objeto con los datos a enviar
-        const usuarioData = {
+    
+        let userData = {
             name: usuarioName,
-            lastName: usuarioLastName,
+            lastname: usuarioLastName,
             email: usuarioEmail,
             telephone: usuarioPhone,
-            password: usuarioPassword
+            password: usuarioPassword,
         };
-
-
-        // Enviar los datos al servidor con fetch (POST)
-        fetch('http://localhost:8080/usuario', {
+    
+        if (userId) {
+            updateUser(userId, userData); // Llamamos a la función para PUT
+        } else {
+            createUser(userData); // Llamamos a la función para POST
+        }
+    });
+    
+    function createUser(userData) {
+        fetch(API_URL, {
             method: 'POST',
             headers: {
-                "Authorization": "Bearer "+token, 
-                'Content-Type': 'application/json'
+                "Authorization": "Bearer " + token,
+                "Content-Type": "application/json"
             },
-            body: JSON.stringify(usuarioData) // Convertir el objeto a JSON
+            body: JSON.stringify(userData)
         })
-            .then(response => {
-                if (response.ok) {
-                    // Si la respuesta HTTP fue exitosa (status 200-299)
-                    return response.json(); // Parsear el cuerpo de la respuesta como JSON
-                } else {
-                    throw new Error('Error al registrar el usuario');
-                }
-            })
-            .then(data => {
-                // Aquí podemos manejar la respuesta procesada como JSON
-                alert('Categoría registrada exitosamente');
-                // Cerrar el modal y limpiar los campos
-                document.getElementById('usuarioName').value = ''; // Limpiar ID para nuevo registro
-                document.getElementById('usuarioLastName').value = '';
-                document.getElementById('usuarioPhone').value = '';
-                document.getElementById('usuarioEmail').value = '';
-                document.getElementById('usuarioPassword').value = '';
-                document.getElementById('usuarioPasswordConfirm').value = '';
-                loadTable(); // Actualizar la tabla después de agregar la categoría
-            })
-            .catch(error => {
-                // Si hubo un error en la solicitud o en la respuestax`
-                alert(error.message); // Mostrar mensaje de error
-                console.error('Error al registrar la categoría:', error);
-            });
+        .then(response => {
+            if (response.ok) {
+                alert('Usuario registrado exitosamente.');
+                closeEditModal();
+                loadTable();
+            } else {
+                alert('Error al registrar el usuario.');
+            }
+        })
+        .catch(error => {
+            console.error('Error al guardar el usuario:', error);
+        });
+    }
+    
+    function updateUser(userId, userData) {
+        const endpoint = `${API_URL}/${userId}`; // Para PUT, agregamos el ID al final de la URL
+    
+        fetch(endpoint, {
+            method: 'PUT',
+            headers: {
+                "Authorization": "Bearer " + token,
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(userData)
+        })
+        .then(response => {
+            if (response.ok) {
+                alert('Usuario actualizado exitosamente.');
+                closeEditModal();
+                loadTable();
+            } else {
+                alert('Error al actualizar el usuario.');
+            }
+        })
+        .catch(error => {
+            console.error('Error al actualizar el usuario:', error);
+        });
+    }
+    
+    //Inicializar la tabla al cargar la pagina
+    loadTable();
+
+     // Eventos para cerrar el modal
+     document.getElementById('closeModalButton').addEventListener('click', closeModal);
+     document.getElementById('closemodal').addEventListener('click', closeModal);
+
+
+     //Abrir el modal para nuevo Usuario
+     document.getElementById('addProduct').addEventListener('click', function () {
+        document.getElementById('usuarioName').value = '';
+        document.getElementById('usuarioLastName').value = '';
+        document.getElementById('usuarioPhone').value = '';
+        document.getElementById('usuarioEmail').value = '';
+        document.getElementById('usuarioPassword').value = '';
+        document.getElementById('usuarioPasswordConfirm').value = '';
+        document.getElementById('modalProvee').style.display = 'block';
     });
-
-
-
-    //Cancelar el modal
-    document.getElementById('cancelarButton').addEventListener("click", () => {
-        document.getElementById('usuarioModal').style.display = 'none';
-    })
-
-
-
+    
 });

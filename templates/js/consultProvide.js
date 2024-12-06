@@ -20,6 +20,12 @@ document.addEventListener('DOMContentLoaded', function () {
                     data.result.forEach((provider, index) => {
                         const row = document.createElement('tr');
 
+                        // Columna #
+                        const numberCell = document.createElement('th');
+                        numberCell.scope = 'row';
+                        numberCell.textContent = index + 1;
+                        row.appendChild(numberCell);
+
                         // Columna Nombre
                         const nameCell = document.createElement('td');
                         nameCell.textContent = provider.name;
@@ -83,8 +89,13 @@ document.addEventListener('DOMContentLoaded', function () {
             });
     }
 
+    
+
+
     // Función para abrir el modal de edición
     function openEditModal(provider) {
+
+        document.getElementById('providerId').value = provider.id;
         document.getElementById('providerName').value = provider.name;
         document.getElementById('providerPhone').value = provider.telefono;
         document.getElementById('providerRFC').value = provider.rfc;
@@ -123,19 +134,35 @@ document.addEventListener('DOMContentLoaded', function () {
             });
     }
 
-    // Guardar cambios (Crear/Editar)
+    
+
     document.getElementById('registerProvider').addEventListener('click', function (event) {
         event.preventDefault();
-
-        const providerData = {
-            name: document.getElementById('providerName').value,
-            telefono: document.getElementById('providerPhone').value,
-            rfc: document.getElementById('providerRFC').value,
-            email: document.getElementById('providerEmail').value,
-            direccion: document.getElementById('providerAddress').value,
+    
+        const providerId = document.getElementById('providerId').value;
+        const providerName = document.getElementById('providerName').value;
+        const providerPhone = document.getElementById('providerPhone').value;
+        const providerRFC = document.getElementById('providerRFC').value;
+        const providerEmail = document.getElementById('providerEmail').value;
+        const providerAddress = document.getElementById('providerAddress').value;
+    
+        let providerData = {
+            name: providerName,
+            telefono: providerPhone,
+            rfc: providerRFC,
+            email: providerEmail,
+            direccion: providerAddress,
             status: true // Nuevo proveedor activo por defecto
         };
-
+    
+        if (providerId) {
+            updateProvider(providerId, providerData); // Llamamos a la función para PUT
+        } else {
+            createProvider(providerData); // Llamamos a la función para POST
+        }
+    });
+    
+    function createProvider(providerData) {
         fetch(API_URL, {
             method: 'POST',
             headers: {
@@ -144,20 +171,46 @@ document.addEventListener('DOMContentLoaded', function () {
             },
             body: JSON.stringify(providerData)
         })
-            .then(response => {
-                if (response.ok) {
-                    alert('Proveedor registrado exitosamente.');
-                    closeEditModal();
-                    loadTable();
-                } else {
-                    alert('Error al registrar el proveedor.');
-                }
-            })
-            .catch(error => {
-                console.error('Error al guardar el proveedor:', error);
-            });
-    });
-
+        .then(response => {
+            if (response.ok) {
+                alert('Proveedor registrado exitosamente.');
+                closeEditModal();
+                loadTable();
+            } else {
+                alert('Error al registrar el proveedor.');
+            }
+        })
+        .catch(error => {
+            console.error('Error al guardar el proveedor:', error);
+        });
+    }
+    
+    function updateProvider(providerId, providerData) {
+        const endpoint = `${API_URL}/${providerId}`; // Para PUT, agregamos el ID al final de la URL
+    
+        fetch(endpoint, {
+            method: 'PUT',
+            headers: {
+                "Authorization": "Bearer " + token,
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(providerData)
+        })
+        .then(response => {
+            if (response.ok) {
+                alert('Proveedor actualizado exitosamente.');
+                closeEditModal();
+                loadTable();
+            } else {
+                alert('Error al actualizar el proveedor.');
+            }
+        })
+        .catch(error => {
+            console.error('Error al actualizar el proveedor:', error);
+        });
+    }
+    
+    
     // Inicializar la tabla al cargar la página
     loadTable();
 

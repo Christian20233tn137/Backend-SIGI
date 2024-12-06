@@ -147,6 +147,12 @@ body, html {
     }
 }
 
+table {
+    td:first-child, 
+    th:first-child {
+        display: none;
+    }
+}
 
 
 

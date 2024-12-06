@@ -76,11 +76,13 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h2>REGISTRO DE USUARIOS</h2>
+                <button class="close-modal" id="closeModalButton">X</button>
             </div>
 
             <div  class="modal-body">
                
                 <form>
+                    <input type="hidden" id="usuarioId">
                     <div class="form-group">
                         <input id="usuarioName" type="text" name="nombre" placeholder="Ingresa el nombre" required>
                     </div>
@@ -103,8 +105,8 @@
            
             </div>
             <div class="modal-footer">
-                <button id="cancelarButton" class="close-modal">Cerrar</button>
-                <button class="registrar">Registrar</button>
+                <button id="closemodal" class="close-modal">Cerrar</button>
+                <button id="registerButton" class="registrar">CONFIRMAR</button>
             </div>
         </div>
     </div>
@@ -119,6 +121,7 @@
             <table class="provider-table" id="states-table">
                 <thead>
                     <tr>
+                        <th>ID</th>
                         <th>NOMBRES</th>
                         <th>APELLIDOS</th>
                         <th>TELÉFONO</th>
