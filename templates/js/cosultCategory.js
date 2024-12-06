@@ -116,53 +116,77 @@ document.addEventListener('DOMContentLoaded', function () {
             });
     }
 
-    // Guardar cambios (Crear/Editar)
     document.getElementById('registerCategoryButton').addEventListener('click', function (event) {
         event.preventDefault();
-
+    
         const categoryId = document.getElementById('categoryId').value;
         const categoryName = document.getElementById('categoryName').value;
         const categoryDescription = document.getElementById('categoryDescription').value;
-
+    
         if (!categoryName || !categoryDescription) {
             alert('Por favor, complete todos los campos.');
             return;
         }
-
+    
         const categoryData = {
-            id: categoryId,
             name: categoryName,
             description: categoryDescription
         };
-
-        const method = categoryId ? 'PUT' : 'POST';
-        const endpoint = categoryId ? `${API_URL}` : `${API_URL}`;
-
-        fetch(endpoint, {
-            method: method,
-            headers: {
-                "Authorization": "Bearer " + token,
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(categoryData)
-        })
-            .then(response => {
-                if (response.ok) {
-                    return response.json();
-                } else {
-                    throw new Error('Error al guardar los datos.');
-                }
+    
+        // Si hay un ID, se usa PUT, de lo contrario POST
+        if (categoryId) {
+            // PUT para actualizar
+            fetch(`${API_URL}/${categoryId}`, {
+                method: 'PUT',
+                headers: {
+                    "Authorization": "Bearer " + token,
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(categoryData)
             })
-            .then(() => {
-                alert('Categoría guardada exitosamente.');
-                closeEditModal();
-                loadTable();
+                .then(response => {
+                    if (response.ok) {
+                        return response.json();
+                    } else {
+                        throw new Error('Error al actualizar la categoría.');
+                    }
+                })
+                .then(() => {
+                    alert('Categoría actualizada exitosamente.');
+                    closeEditModal();
+                    loadTable();
+                })
+                .catch(error => {
+                    alert('Error al actualizar los datos: ' + error.message);
+                });
+        } else {
+            // POST para crear
+            fetch(API_URL, {
+                method: 'POST',
+                headers: {
+                    "Authorization": "Bearer " + token,
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(categoryData)
             })
-            .catch(error => {
-                alert('Error al guardar los datos: ' + error.message);
-            });
+                .then(response => {
+                    if (response.ok) {
+                        return response.json();
+                    } else {
+                        throw new Error('Error al crear la categoría.');
+                    }
+                })
+                .then(() => {
+                    alert('Categoría creada exitosamente.');
+                    closeEditModal();
+                    loadTable();
+                })
+                .catch(error => {
+                    alert('Error al crear los datos: ' + error.message);
+                });
+        }
     });
-
+    
     // Inicializar la tabla al cargar la página
     loadTable();
 

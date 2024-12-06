@@ -21,6 +21,11 @@ document.addEventListener('DOMContentLoaded', function () {
                     data.result.forEach(producto => {
                         const row = document.createElement('tr');
 
+                        // Columna #
+                        const numberCell = document.createElement('th');
+                        numberCell.scope = 'row';
+                        numberCell.textContent = index + 1;
+                        row.appendChild(numberCell);
                         // Columna Nombre
                         const nameCell = document.createElement('td');
                         nameCell.textContent = producto.nombre;
@@ -108,7 +113,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function openEditModal(producto) {
         document.getElementById('productId').value = producto.id || '';
-        document.getElementById('productName').value = producto.name || '';
+        document.getElementById('productName').value = producto.nombre || '';
         document.getElementById('precioUnitario').value = producto.precioUnitario || '';
         document.getElementById('categoryId').value = producto.categorias ? producto.categorias.id : '';
         document.getElementById('cantidad').value = producto.cantidad || '';
