@@ -1,15 +1,16 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Consultar Usuarios</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="css/ConsultarUsuarios.css">
-</head>
-<body>
-    <img src="img/fondo1.png" alt="Fondo" class="background">
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Consultar Usuarios</title>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="css/ConsultarUsuarios.css">
+    </head>
+    <body>
+        <img src="img/fondo1.png" alt="Fondo" class="background">
 
+<<<<<<< HEAD
     <!-- Barra lateral -->
     <div class="sidebar">
        <ul class="menu">
@@ -111,38 +112,138 @@
             <div class="modal-footer">
                 <button id="cancelarButton" class="close-modal">Cerrar</button>
                 <button class="registrar">Registrar</button>
+=======
+        <!-- Barra lateral -->
+        <div class="sidebar">
+        <ul class="menu">
+            <a class="menu" href="Menu.html">
+                <li  class="menu-item">
+                    <i class="icon fa fa-home"></i>
+                    <span>Menu principal</span>
+                </li>
+            </a>
+            <a class="menu" href="ConsultCategory.html">
+                <li class="menu-item">
+                    <i class="icon fas fa-th-large"></i>
+                    <span>Categorías</span>
+                </li>
+            </a> 
+            <a class="menu" href="ConsultProduct.html">
+                <li class="menu-item">
+                    <i class="icon fas fa-box"></i>
+                    <span>Productos</span>
+                </li>
+            </a>
+            <a class="menu" href="ConsultProvide.html">  
+                <li class="menu-item">
+                    <i class="icon fas fa-truck"></i>
+                    <span>Proveedores</span>
+                </li>
+            </a>
+            <a class="menu" href="ConsultarUsuarios.html">  
+                <li class="menu-item">
+                    <i class="icon fas fa-users"></i>
+                    <span>Usuarios</span>
+                </li>
+            </a>  
+            <a href="login.html" class="menu">
+                <li class="menu-item">
+                    <i class=" icon fas fa-sign-out-alt"></i>
+                    <span>Salir</span>
+                </li>
+            </a>
+        </ul>
+        <div class="profile">
+            <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="Profile Picture">
+            <div>
+                <p>Nombre del usuario</p>
+                <small>Cuenta Free</small>
+>>>>>>> cf42e82cffdcfc9230973385e195ae300891f059
             </div>
         </div>
     </div>
+    <br>
 
-
-
-
-            <br>
+    <div class="form-container">
+        <div class="form-header">
+            <h2>CONSULTAR USUARIOS</h2>
         </div>
-        <!-- Table -->
-        <main class="content">
-            <table class="provider-table" id="states-table">
-                <thead>
-                    <tr>
-                        <th>NOMBRES</th>
-                        <th>APELLIDOS</th>
-                        <th>TELÉFONO</th>
-                        <th>CORREO ELECTRÓNICO</th>
-                        <th>ESTADO</th>
-                        <th>GESTIONAR</th>
-                    </tr>
-                </thead>
-               <tbody>
-                 <!-- Contenido dinámico -->
-               </tbody>
-            </table>
-        </main>
+        <form class="registration-form">
+            <div class="search-bar">
+                <input type="text" id="searchInput" placeholder="Buscar..." />
+                <button class="search-button"><i class="fas fa-search"></i></button>
+                <button class="plus-button"  id="addProduct"><i class="fas fa-plus"></i>Agregar</button>
+
+
+        <!-- Modal -->
+        <div class="modal" id="usuarioModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>REGISTRO DE USUARIOS</h2>
+                    <button class="close-modal" id="closeModalButton">X</button>
+                </div>
+
+                <div  class="modal-body">
+                
+                    <form>
+                        <input type="hidden" id="usuarioId">
+                        <div class="form-group">
+                            <input id="usuarioName" type="text" name="nombre" placeholder="Ingresa el nombre" required>
+                        </div>
+                        <div class="form-group">
+                            <input id="usuarioLastName" type="text" name="apellidos" placeholder="Ingresa tus apellidos" required>
+                        </div>
+                        <div class="form-group">
+                            <input id="usuarioPhone" type="text" name="telefono" placeholder="Ingresa tu telefono" required>
+                        </div>
+                        <div class="form-group">
+                            <input id="usuarioEmail" type="email" name="correo" placeholder="Ingresa tu correo electrónico" required>
+                        </div>
+                        <div class="form-group">
+                            <input id="usuarioPassword" type="password" name="password" placeholder="Contraseña temporal" required>
+                        </div>
+                        <div class="form-group">
+                            <input id="usuarioPasswordConfirm" type="password" name="confirmpass" placeholder="Confirmar contraseña" required>
+                        </div>
+                    </form>  
+            
+                </div>
+                <div class="modal-footer">
+                    <button id="closemodal" class="close-modal">Cerrar</button>
+                    <button id="registerButton" class="registrar">CONFIRMAR</button>
+                </div>
+            </div>
+        </div>
+
+
+
+
+                <br>
+            </div>
+            <!-- Table -->
+            <main class="content">
+                <table class="provider-table" id="states-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>NOMBRES</th>
+                            <th>APELLIDOS</th>
+                            <th>TELÉFONO</th>
+                            <th>CORREO ELECTRÓNICO</th>
+                            <th>ESTADO</th>
+                            <th>GESTIONAR</th>
+                        </tr>
+                    </thead>
+                <tbody>
+                    <!-- Contenido dinámico -->
+                </tbody>
+                </table>
+            </main>
+        </div>
+            </div>
+            <br> 
+        </form>
     </div>
-           </div>
-           <br> 
-       </form>
-   </div>
-   <script src="js/Usuario.js"></script>
-</body>
-</html>
+    <script src="js/Usuario.js"></script>
+    </body>
+    </html>

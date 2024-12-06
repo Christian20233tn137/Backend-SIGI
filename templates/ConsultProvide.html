@@ -87,7 +87,11 @@
                 </div>
                 <div class="modal-body">
                     <form>
+<<<<<<< HEAD
                         
+=======
+                        <input type="hidden" id="providerId">
+>>>>>>> cf42e82cffdcfc9230973385e195ae300891f059
                         <div class="form-group">
                             <input type="hidden" id="providerId">
                             <input type="text" id="providerName" name="nombre" placeholder="Ingresa el nombre" required>
@@ -108,7 +112,7 @@
                 </div>
                 <div class="modal-footer">
                     <button class="close-modal" id="closeModal">Cerrar</button>
-                    <button class="registrar" id="registerProvider">Registrar</button>
+                    <button class="registrar" id="registerProvider">CONFIRMAR</button>
                 </div>
             </div>
         </div>
@@ -117,7 +121,8 @@
         <main class="content">
             <table class="provider-table" id="providerTable">
                 <thead>
-                    <tr>
+                    <tr data>
+                        <th>ID</th>
                         <th>NOMBRE</th>
                         <th>RFC</th>
                         <th>DIRECCIÓN</th>

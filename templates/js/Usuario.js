@@ -21,6 +21,12 @@ document.addEventListener('DOMContentLoaded', function () {
                     data.result.forEach((usuario, index) => {
                         const row = document.createElement('tr');
 
+                        // Columna #
+                        const numberCell = document.createElement('th');
+                        numberCell.scope = 'row';
+                        numberCell.textContent = index + 1;
+                        row.appendChild(numberCell);
+
                         // Columna Nombre
                         const nameCell = document.createElement('td');
                         nameCell.textContent = usuario.name;
@@ -54,7 +60,11 @@ document.addEventListener('DOMContentLoaded', function () {
                         editButton.className = 'btn btn-primary btn-sm mr-2';
                         editButton.textContent = 'Editar';
                         editButton.addEventListener('click', function () {
+<<<<<<< HEAD
                             openEditModal(usuario);
+=======
+                            openEditModal(usuario); 
+>>>>>>> cf42e82cffdcfc9230973385e195ae300891f059
                         });
                         actionsCell.appendChild(editButton);
 
@@ -63,7 +73,11 @@ document.addEventListener('DOMContentLoaded', function () {
                         toggleButton.className = `btn btn-sm ${usuario.status ? 'btn-danger' : 'btn-success'}`;
                         toggleButton.textContent = usuario.status ? 'Desactivar' : 'Activar';
                         toggleButton.addEventListener('click', function () {
+<<<<<<< HEAD
                             toggleUserStatus(usuario.id, statusCell, toggleButton);
+=======
+                            toggleUserStatus(usuario.id, row, statusCell, toggleButton); 
+>>>>>>> cf42e82cffdcfc9230973385e195ae300891f059
                         });
                         actionsCell.appendChild(toggleButton);
 
@@ -79,6 +93,7 @@ document.addEventListener('DOMContentLoaded', function () {
             });
     }
 
+<<<<<<< HEAD
     // Función para abrir el modal de edición
     function openEditModal(usuario) {
         document.getElementById('usuarioName').value = usuario.name;
@@ -145,6 +160,81 @@ document.addEventListener('DOMContentLoaded', function () {
             status: true
         };
 
+=======
+
+    //Funcion para abrir el modal de edicion
+    function openEditModal(usuario){
+        document.getElementById('usuarioId').value = usuario.id;
+        document.getElementById("usuarioName").value = usuario.name
+        document.getElementById("usuarioLastName").value = usuario.lastName
+        document.getElementById("usuarioPhone").value = usuario.phone
+        document.getElementById("usuarioEmail").value = usuario.email
+        document.getElementById("usuarioPassword").value = usuario.password
+        document.getElementById("usuarioPasswordConfirm").value = usuario.password2
+        document.getElementById('usuarioModel').style.display= 'block';
+    }
+
+    function closeModal(){
+        document.getElementById('usuarioModal').style.display = 'none';
+    }
+    
+    //Funcion para cambiar el estado de un usuario
+    function toggleUserStatus(id, statusCell, toggleButton){
+        fetch(`${API_URL}/cambiar-estado`, {
+            method: 'PUT',
+            headers: {
+                "Authorization": "Bearer " + token,
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({id : id})
+        })
+        .then(response => {
+            if (response.ok) {
+                const newStatus = toggleButton.textContent === 'Activar';
+                statusCell.textContent = newStatus ? 'Activo' : 'Inactivo';
+                toggleButton.className = `btn btn-sm ${newStatus ? 'btn-danger' : 'btn-success'}`;
+                toggleButton.textContent = newStatus ? 'Desactivar' : 'Activar';
+            } else {
+                alert('Error al cambiar el estado del usuario.');
+            }
+        })
+        .catch(error => {
+            console.error('Error al cambiar el estado:', error);
+        });
+
+    }
+
+    
+
+    
+    //Crear o editar
+    document.getElementById('registerButton').addEventListener('click', function(event) {
+        event.preventDefault();
+    
+        const userId = document.getElementById('usuarioId').value;
+        const usuarioName = document.getElementById('usuarioName').value;
+        const usuarioLastName = document.getElementById('usuarioLastName').value;
+        const usuarioPhone = document.getElementById('usuarioPhone').value;
+        const usuarioEmail = document.getElementById('usuarioEmail').value;
+        const usuarioPassword = document.getElementById('usuarioPassword').value;
+    
+        let userData = {
+            name: usuarioName,
+            lastname: usuarioLastName,
+            email: usuarioEmail,
+            telephone: usuarioPhone,
+            password: usuarioPassword,
+        };
+    
+        if (userId) {
+            updateUser(userId, userData); // Llamamos a la función para PUT
+        } else {
+            createUser(userData); // Llamamos a la función para POST
+        }
+    });
+    
+    function createUser(userData) {
+>>>>>>> cf42e82cffdcfc9230973385e195ae300891f059
         fetch(API_URL, {
             method: 'POST',
             headers: {
@@ -153,6 +243,7 @@ document.addEventListener('DOMContentLoaded', function () {
             },
             body: JSON.stringify(userData)
         })
+<<<<<<< HEAD
             .then(response => {
                 if (response.ok) {
                     alert('Usuario registrado exitosamente.');
@@ -175,6 +266,57 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Abrir modal para nuevo usuario
     document.getElementById('addProduct').addEventListener('click', function () {
+=======
+        .then(response => {
+            if (response.ok) {
+                alert('Usuario registrado exitosamente.');
+                closeModal();
+                loadTable();
+            } else {
+                alert('Error al registrar el usuario.');
+            }
+        })
+        .catch(error => {
+            console.error('Error al guardar el usuario:', error);
+        });
+    }
+    
+    function updateUser(userId, userData) {
+        const endpoint = `${API_URL}/${userId}`; // Para PUT, agregamos el ID al final de la URL
+    
+        fetch(endpoint, {
+            method: 'PUT',
+            headers: {
+                "Authorization": "Bearer " + token,
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(userData)
+        })
+        .then(response => {
+            if (response.ok) {
+                alert('Usuario actualizado exitosamente.');
+                closeModal();
+                loadTable();
+            } else {
+                alert('Error al actualizar el usuario.');
+            }
+        })
+        .catch(error => {
+            console.error('Error al actualizar el usuario:', error);
+        });
+    }
+    
+    //Inicializar la tabla al cargar la pagina
+    loadTable();
+
+     // Eventos para cerrar el modal
+     document.getElementById('closeModalButton').addEventListener('click', closeModal);
+     document.getElementById('closemodal').addEventListener('click', closeModal);
+
+
+     //Abrir el modal para nuevo Usuario
+     document.getElementById('addProduct').addEventListener('click', function () {
+>>>>>>> cf42e82cffdcfc9230973385e195ae300891f059
         document.getElementById('usuarioName').value = '';
         document.getElementById('usuarioLastName').value = '';
         document.getElementById('usuarioPhone').value = '';
@@ -183,4 +325,8 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('usuarioPasswordConfirm').value = '';
         document.getElementById('usuarioModal').style.display = 'block';
     });
+<<<<<<< HEAD
+=======
+    
+>>>>>>> cf42e82cffdcfc9230973385e195ae300891f059
 });
