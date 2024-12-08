@@ -19,6 +19,41 @@ body, html {
     z-index: -1; /* Envía la imagen al fondo */
 }
 
+/*Probando el tamaño*/
+
+.content {
+    margin-left: 70px; /* Corresponde al ancho inicial de la sidebar */
+    transition: margin-left 0.3s ease; /* Suaviza la transición cuando se expande la sidebar */
+}
+
+.sidebar:hover ~ .content {
+    margin-left: 250px; /* Ajusta el espacio cuando la sidebar está expandida */
+}
+
+
+
+/* Aseguramos que la tabla y el contenedor se ajusten */
+.form-container {
+    width: calc(100% - 70px); /* Descuenta el ancho de la sidebar */
+    margin-left: auto;
+    margin-right: auto;
+    transition: width 0.3s ease;
+}
+
+.sidebar:hover ~ .form-container {
+    width: calc(100% - 250px); /* Ajuste cuando la sidebar está expandida */
+}
+
+/* Media queries para dispositivos pequeños */
+@media (max-width: 768px) {
+    .content, .form-container {
+        margin-left: 50px; /* Reduce el espacio para dispositivos más pequeños */
+    }
+    .sidebar:hover ~ .content, .sidebar:hover ~ .form-container {
+        margin-left: 180px; /* Ajuste para sidebar expandida en pantallas pequeñas */
+    }
+}
+
 .sidebar {
     width: 70px; /* Sidebar compacta */
     background: linear-gradient(to bottom, #1f5a51, #1f5a51);
@@ -41,6 +76,17 @@ body, html {
 .sidebar:hover {
     width: 250px; /* Sidebar expandida */
 }
+
+
+
+.modal {
+    display: none; /* Oculto por defecto */
+}
+
+.modal.modal-show {
+    display: block; /* Solo visible con esta clase */
+}
+
 
 .logo {
     display: flex;
@@ -365,7 +411,7 @@ table {
 
 
 
-modal {
+.modal {
     display: none;  /* Se oculta inicialmente */
     position: fixed;
     top: 50%;

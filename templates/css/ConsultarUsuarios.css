@@ -19,6 +19,44 @@ body, html {
     z-index: -1; /* Envía la imagen al fondo */
 }
 
+
+/*Probando el tamaño*/
+
+.content {
+    margin-left: 70px; /* Corresponde al ancho inicial de la sidebar */
+    transition: margin-left 0.3s ease; /* Suaviza la transición cuando se expande la sidebar */
+}
+
+.sidebar:hover ~ .content {
+    margin-left: 250px; /* Ajusta el espacio cuando la sidebar está expandida */
+}
+
+
+
+/* Aseguramos que la tabla y el contenedor se ajusten */
+.form-container {
+    width: calc(100% - 70px); /* Descuenta el ancho de la sidebar */
+    margin-left: auto;
+    margin-right: auto;
+    transition: width 0.3s ease;
+}
+
+.sidebar:hover ~ .form-container {
+    width: calc(100% - 250px); /* Ajuste cuando la sidebar está expandida */
+}
+
+/* Media queries para dispositivos pequeños */
+@media (max-width: 768px) {
+    .content, .form-container {
+        margin-left: 50px; /* Reduce el espacio para dispositivos más pequeños */
+    }
+    .sidebar:hover ~ .content, .sidebar:hover ~ .form-container {
+        margin-left: 180px; /* Ajuste para sidebar expandida en pantallas pequeñas */
+    }
+}
+
+
+
 .sidebar {
     width: 70px; /* Sidebar compacta */
     background: linear-gradient(to bottom, #1f5a51, #1f5a51);
@@ -378,33 +416,14 @@ table {
 
 
 
-/* Estilo inicial del modal (oculto) */
 .modal {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 85%;
-    background-color: rgba(0, 0, 0, 0.5);
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-}
-
-/* Mostrar modal cuando se agrega la clase modal-show */
-.modal.modal-show {
-    display: flex;
-}
-
-/* Estilos del contenido del modal */
-.modal {
+    display: none;  /* Se oculta inicialmente */
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     width: 80%;
-    max-width: 400px;
+    max-width: 600px;
     background-color: #ffffff;
     border-radius: 10px;
     box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
@@ -413,6 +432,12 @@ table {
     animation: fadeIn 0.3s ease-in-out;
 }
 
+/* Mostrar modal cuando se agrega la clase modal-show */
+.modal.modal-show {
+    display: block;
+}
+
+/* Animación de entrada */
 @keyframes fadeIn {
     from {
         opacity: 0;
@@ -424,6 +449,19 @@ table {
     }
 }
 
+/* Encabezado del modal */
+.modal-header {
+    background-color: #006d68;
+    color: white;
+    padding: 15px;
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+/* Contenido del modal */
 .modal-content {
     padding: 10px;
 }
@@ -450,7 +488,7 @@ table {
     font-size: 1rem;
     border: 1px solid #ddd;
     border-radius: 5px;
-    width: 100%;
+    width: 200%;
     box-sizing: border-box;
 }
 
@@ -500,15 +538,9 @@ table {
     background-color: #d32f2f;
 }
 
-.registrar {
-    background-color: #4caf50;
-    color: #ffffff;
-}
-
 .registrar:hover {
-    background-color: #0f5d44;
+    background-color: #064d2b;
 }
-
 .registrar    {
     padding: 10px 20px;
     background-color: #00796b;
@@ -517,4 +549,3 @@ table {
     border-radius: 4px;
     cursor: pointer;
 }
-

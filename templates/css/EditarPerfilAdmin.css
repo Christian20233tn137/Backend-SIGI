@@ -18,6 +18,27 @@ body, html {
     z-index: -1; /* Envía la imagen al fondo */
 }
 
+/* Ajustar el contenido principal para evitar que sea cubierto por la barra lateral */
+.form-container {
+    margin-left: 70px; /* Espacio inicial para la barra lateral compacta */
+    transition: margin-left 0.3s ease; /* Suaviza la transición al expandir/colapsar la barra lateral */
+}
+
+.sidebar:hover ~ .form-container {
+    margin-left: 250px; /* Espacio para la barra lateral expandida */
+}
+
+/* Para dispositivos pequeños */
+@media (max-width: 768px) {
+    .form-container {
+        margin-left: 50px; /* Ajuste del margen en dispositivos pequeños */
+    }
+    .sidebar:hover ~ .form-container {
+        margin-left: 180px; /* Ajuste del margen cuando la barra lateral está expandida */
+    }
+}
+
+
 .sidebar {
     width: 70px; /* Sidebar compacta */
     background: linear-gradient(to bottom, #1f5a51, #1f5a51);
@@ -227,3 +248,70 @@ body, html {
     background-color: #004d4a;
 }
 
+/* Para pantallas muy pequeñas (teléfonos pequeños) */
+@media (max-width: 480px) {
+    .sidebar {
+        width: 40px;
+    }
+    .sidebar:hover {
+        width: 150px;
+    }
+    .form-container {
+        margin: 20px;
+        width: calc(100% - 40px); /* Asegurar que el formulario ocupe todo el espacio disponible */
+    }
+    .form-row {
+        flex-direction: column; /* Alinear las filas del formulario en columna */
+    }
+    .form-group {
+        width: 100%; /* Asegurar que cada grupo ocupe todo el ancho disponible */
+    }
+}
+
+/* Para pantallas medianas (tablets) */
+@media (max-width: 1024px) and (min-width: 769px) {
+    .sidebar {
+        width: 60px;
+    }
+    .sidebar:hover {
+        width: 200px;
+    }
+    .form-container {
+        max-width: 700px;
+    }
+    .form-header {
+        font-size: 1.3rem;
+    }
+}
+
+/* Para pantallas grandes (escritorios grandes) */
+@media (min-width: 1440px) {
+    .form-container {
+        max-width: 1200px;
+    }
+    .form-header {
+        font-size: 2rem;
+    }
+    .sidebar {
+        width: 80px;
+    }
+    .sidebar:hover {
+        width: 300px;
+    }
+}
+
+/* Para pantallas ultra anchas */
+@media (min-width: 1920px) {
+    .form-container {
+        max-width: 1500px;
+    }
+    .form-header {
+        font-size: 2.2rem;
+    }
+    .sidebar {
+        width: 90px;
+    }
+    .sidebar:hover {
+        width: 350px;
+    }
+}

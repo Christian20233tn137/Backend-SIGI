@@ -5,7 +5,7 @@ body {
     background-color: #f5f5f5;
 }
 
-.background{
+.background {
     position: fixed;
     top: 0;
     left: 0;
@@ -14,7 +14,7 @@ body {
     z-index: -1; /* Envía la imagen al fondo */
 }
 
-/*Estilos icono salida */
+/* Estilos icono salida */
 .logout-icon {
     text-decoration: none;
     color: #ffffff;
@@ -31,7 +31,6 @@ body {
 .logout-icon:hover {
     color: #07f686;
 }
- 
 
 .header {
     background-color: #005D57;
@@ -41,18 +40,10 @@ body {
     position: relative;
 }
 
-.header .logout-icon  {
+.header .logout-icon {
     position: absolute;
     right: 10px;
     top: 60px;
-    font-size: 20px;
-    cursor: pointer;
-}
-
-.header .user-icon {
-    position: absolute;
-    right: 10px;
-    top: 10px;
     font-size: 20px;
     cursor: pointer;
 }
@@ -108,10 +99,82 @@ body {
     cursor: pointer;
 }
 
-
-
 .footer {
     background-color: #008A7D;
     height: 50px;
     width: 100%;
+}
+
+/* Media Queries */
+
+/* Tablets */
+@media (max-width: 768px) {
+    .header {
+        padding: 10px;
+        font-size: 16px;
+    }
+
+    .header .logout-icon {
+        font-size: 18px;
+        top: 50px;
+    }
+
+    .container {
+        height: calc(100vh - 100px);
+        padding: 20px;
+    }
+
+    .action-card {
+        width: 120px;
+        height: 120px;
+    }
+
+    .action-card i {
+        font-size: 40px;
+    }
+
+    .action-button {
+        font-size: 12px;
+        padding: 5px 8px;
+    }
+}
+
+/* Mobile Phones */
+@media (max-width: 480px) {
+    .header {
+        font-size: 14px;
+        padding: 5px;
+    }
+
+    .header .logout-icon {
+        font-size: 16px;
+        top: 40px;
+    }
+
+    .container {
+        flex-direction: column;
+        height: auto;
+        padding: 10px;
+    }
+
+    .actions {
+        gap: 10px;
+        flex-direction: column;
+    }
+
+    .action-card {
+        width: 100%;
+        max-width: 200px;
+        height: auto;
+        padding: 15px;
+    }
+
+    .action-card i {
+        font-size: 30px;
+    }
+
+    .action-button {
+        font-size: 12px;
+        padding: 5px;
+    }
 }

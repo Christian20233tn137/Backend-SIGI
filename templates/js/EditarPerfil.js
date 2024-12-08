@@ -1,6 +1,28 @@
-// Función para cargar los datos de un usuario al formulario
-function loadUserData(userId) {
-    fetch(`http://localhost:8080/usuario/${userId}`)
+document.addEventListener('DOMContentLoaded', function () {
+    const API_URL = 'http://localhost:8080/usuario';
+    const token = localStorage.getItem('authToken'); // Obtiene el token desde localStorage
+    const userId = localStorage.getItem('userId'); // Obtiene el ID del usuario desde localStorage
+
+    // Validar la existencia del token y el ID
+    if (!token) {
+        alert('No se encontró un token de autenticación. Por favor, inicia sesión.');
+        return;
+    }
+
+    if (!userId) {
+        alert('No se encontró un ID de usuario. Por favor, inicia sesión nuevamente.');
+        return;
+    }
+
+    // Función para cargar los datos del usuario
+    function loadUserData(userId) {
+        fetch(`${API_URL}/${userId}`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+        })
         .then(response => {
             if (!response.ok) {
                 throw new Error(`Error ${response.status}: ${response.statusText}`);
@@ -8,60 +30,55 @@ function loadUserData(userId) {
             return response.json();
         })
         .then(data => {
-            document.getElementById('nombres').value = data.name;
-            document.getElementById('apellidos').value = data.lastname;
-            document.getElementById('correo').value = data.email;
-            document.getElementById('telefono').value = data.telephone;
+            // Cargar los datos en los campos del formulario
+            document.getElementById('nombres').value = data.name || '';
+            document.getElementById('apellidos').value = data.lastname || '';
+            document.getElementById('correo').value = data.email || '';
+            document.getElementById('telefono').value = data.telephone || '';
         })
         .catch(error => {
-            console.error('Error:', error);
-            alert('Error al cargar datos del usuario: ' + error.message);
+            console.error('Error al cargar los datos del usuario:', error);
+            alert('Error al cargar los datos del usuario: ' + error.message);
         });
-}
+    }
 
+    // Función para actualizar los datos del usuario
+    function updateUserProfile(userId) {
+        const updatedData = {
+            name: document.getElementById('nombres').value,
+            lastname: document.getElementById('apellidos').value,
+            email: document.getElementById('correo').value,
+            telephone: document.getElementById('telefono').value,
+        };
 
-// Función para actualizar los datos de un usuario
-function updateUser() {
-    // Obtiene los valores del formulario
-    const nombres = document.getElementById('nombres').value;
-    const apellidos = document.getElementById('apellidos').value;
-    const correo = document.getElementById('correo').value;
-    const telefono = document.getElementById('telefono').value;
-
-    // Crea el objeto que será enviado al backend
-    const userData = {
-        name: nombres,
-        lastname: apellidos,
-        email: correo,
-        telephone: telefono
-    };
-
-    // Realiza la solicitud PUT para actualizar los datos
-    fetch('http://localhost:8080/usuario', {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(userData),
-    })
-    .then(response => {
-        if (response.ok) {
+        fetch(`${API_URL}/${userId}`, {
+            method: 'PUT',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(updatedData),
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`Error ${response.status}: ${response.statusText}`);
+            }
             return response.json();
-        } else {
-            throw new Error('Error al actualizar el usuario');
-        }
-    })
-    .then(data => {
-        alert('Usuario actualizado con éxito: ' + JSON.stringify(data));
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        alert('Error al actualizar el usuario: ' + error.message);
-    });
-}
+        })
+        .then(data => {
+            alert('Perfil actualizado con éxito.');
+        })
+        .catch(error => {
+            console.error('Error al actualizar el perfil del usuario:', error);
+            alert('Error al actualizar el perfil: ' + error.message);
+        });
+    }
 
-// Ejemplo: Cargar datos de un usuario con ID 1 al cargar la página
-document.addEventListener('DOMContentLoaded', () => {
-    const userId = 1; // Cambia este valor por el ID dinámico que necesites
+    // Cargar datos del usuario al cargar la página
     loadUserData(userId);
+
+    // Actualizar perfil al hacer clic en el botón de guardar
+    document.getElementById('updateBtn').addEventListener('click', function () {
+        updateUserProfile(userId);
+    });
 });

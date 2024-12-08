@@ -67,6 +67,9 @@ document.addEventListener('DOMContentLoaded', function () {
                         row.appendChild(actionsCell);
                         tableBody.appendChild(row);
                     });
+
+                    // Aplicar filtro una vez que los datos sean cargados
+                    applyFilter();
                 } else {
                     alert('Error al cargar las categorías.');
                 }
@@ -74,6 +77,27 @@ document.addEventListener('DOMContentLoaded', function () {
             .catch(error => {
                 console.error('Error al obtener los datos:', error);
             });
+    }
+
+    // Función para aplicar filtro en la tabla
+    function applyFilter() {
+        const searchInput = document.getElementById('searchInput');
+        const tableRows = document.querySelectorAll('#states-table tbody tr');
+
+        searchInput.addEventListener('input', function () {
+            const searchText = searchInput.value.toLowerCase();
+
+            tableRows.forEach(row => {
+                const name = row.cells[1].textContent.toLowerCase();
+                const description = row.cells[2].textContent.toLowerCase();
+
+                if (name.includes(searchText) || description.includes(searchText)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        });
     }
 
     // Función para abrir el modal de edición
@@ -118,21 +142,21 @@ document.addEventListener('DOMContentLoaded', function () {
 
     document.getElementById('registerCategoryButton').addEventListener('click', function (event) {
         event.preventDefault();
-    
+
         const categoryId = document.getElementById('categoryId').value;
         const categoryName = document.getElementById('categoryName').value;
         const categoryDescription = document.getElementById('categoryDescription').value;
-    
+
         if (!categoryName || !categoryDescription) {
             alert('Por favor, complete todos los campos.');
             return;
         }
-    
+
         const categoryData = {
             name: categoryName,
             description: categoryDescription
         };
-    
+
         // Si hay un ID, se usa PUT, de lo contrario POST
         if (categoryId) {
             // PUT para actualizar
@@ -186,7 +210,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 });
         }
     });
-    
+
     // Inicializar la tabla al cargar la página
     loadTable();
 
