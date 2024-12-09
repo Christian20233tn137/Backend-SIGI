@@ -45,6 +45,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Función para actualizar los datos del usuario
     function updateUserProfile(userId) {
         const updatedData = {
+            id: userId,
             name: document.getElementById('nombres').value,
             lastname: document.getElementById('apellidos').value,
             email: document.getElementById('correo').value,
