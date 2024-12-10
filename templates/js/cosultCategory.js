@@ -1,9 +1,18 @@
 document.addEventListener('DOMContentLoaded', function () {
     // URL base de la API
     const API_URL = 'http://localhost:8080/categorias';
-
     const token = localStorage.getItem('authToken');
+    const userRole = localStorage.getItem('userRole');  // Asegúrate de guardar el rol del usuario en localStorage
     console.log(token);
+    console.log('Rol recuperado de localStorage:', userRole); // Verificar el valor del rol
+
+
+    // Verificar si el usuario tiene el rol adecuado para acceder al menú principal
+    if (userRole !== 'ROLE_ADMIN') {  // Solo los usuarios con rol 'ROLE_ADMIN' pueden acceder
+        alert('Acceso denegado. No tienes permisos suficientes para ver esta página.');
+        window.location.href = 'login.html';  // Redirigir a la página de inicio de sesión
+        return;
+    }
 
     // Función para obtener datos de la API y llenar la tabla
     function loadTable() {

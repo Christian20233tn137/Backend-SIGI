@@ -134,5 +134,22 @@
     </div>
 
     <script src="js/consultProvide.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Obtener el rol del usuario desde localStorage
+            const userRole = localStorage.getItem('userRole'); 
+            console.log('Rol recuperado de localStorage:', userRole); // Debugging
+    
+            // Verificar si el usuario tiene el rol adecuado para acceder al menú principal
+            if (userRole !== 'ROLE_ADMIN') {  // Solo los usuarios con rol 'ROLE_ADMIN' pueden acceder
+                alert('Acceso denegado. No tienes permisos suficientes para ver esta página.');
+                window.location.href = 'login.html';  // Redirigir a la página de inicio de sesión
+                return;
+            }
+    
+            // Si el usuario tiene el rol adecuado, permitir la carga normal
+            console.log('Acceso permitido para ROLE_ADMIN');
+        });
+    </script>
 </body>
 </html>

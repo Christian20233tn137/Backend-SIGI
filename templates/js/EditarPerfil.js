@@ -2,6 +2,17 @@ document.addEventListener('DOMContentLoaded', function () {
     const API_URL = 'http://localhost:8080/usuario';
     const token = localStorage.getItem('authToken'); // Obtiene el token desde localStorage
     const userId = localStorage.getItem('userId'); // Obtiene el ID del usuario desde localStorage
+    const userRole = localStorage.getItem('userRole');  // Asegúrate de guardar el rol del usuario en localStorage
+
+
+    console.log('Rol recuperado de localStorage:', userRole); // Verificar el valor del rol
+
+    // Verificar si el usuario tiene el rol adecuado para acceder al menú principal
+    if (userRole !== 'ROLE_ADMIN') {  // Solo los usuarios con rol 'ROLE_ADMIN' pueden acceder
+        alert('Acceso denegado. No tienes permisos suficientes para ver esta página.');
+        window.location.href = 'login.html';  // Redirigir a la página de inicio de sesión
+        return;
+    }
 
     // Validar la existencia del token y el ID
     if (!token) {

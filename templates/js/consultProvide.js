@@ -1,11 +1,20 @@
 document.addEventListener('DOMContentLoaded', function () {
     const API_URL = 'http://localhost:8080/proveedor';
-    const token = localStorage.getItem('authToken');
+    const token = localStorage.getItem('authToken');    
+    const userRole = localStorage.getItem('userRole');  // Asegúrate de guardar el rol del usuario en localStorage
     const modal = document.getElementById('modalProvee');
     modal.style.display = 'none';
+    console.log('Rol recuperado de localStorage:', userRole); // Verificar el valor del rol
 
     // Referencia al input de búsqueda
     const searchInput = document.getElementById('searchInput');
+
+    // Verificar si el usuario tiene el rol adecuado para acceder al menú principal
+    if (userRole !== 'ROLE_ADMIN') {  // Solo los usuarios con rol 'ROLE_ADMIN' pueden acceder
+        alert('Acceso denegado. No tienes permisos suficientes para ver esta página.');
+        window.location.href = 'login.html';  // Redirigir a la página de inicio de sesión
+        return;
+    }
 
     // Función para obtener datos de la API y llenar la tabla
     function loadTable() {

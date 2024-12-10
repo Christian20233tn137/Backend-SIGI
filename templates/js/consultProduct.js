@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const token = localStorage.getItem('authToken');
     const searchInput = document.getElementById('searchInput');
     let productos = []; // Lista para almacenar todos los productos
-
+    
     // Cargar productos desde la API
     function loadTable() {
         fetch(`${API_URL}/all`, {

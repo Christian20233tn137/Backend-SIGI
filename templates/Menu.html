@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Menu principal</title>
+    <title>Menú principal</title>
     <!-- Link a Font Awesome para íconos externos -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/menu.css">
@@ -18,27 +18,43 @@
     </div>
     <div class="container">
         <div class="actions">
-            <a href="ConsultCategory.html" class="action-card" >
-            
+            <a href="ConsultCategory.html" class="action-card" id="categoryLink">
                 <i class="fas fa-th-large"></i>
-                <button class="action-button">Gestionar categorias</button>
+                <button class="action-button">Gestionar categorías</button>
             </a>
-            <a href="ConsultProduct.html" class="action-card">
-            
+            <a href="ConsultProduct.html" class="action-card" id="productLink">
                 <i class="fas fa-box"></i>
-                <button class="action-button" >Gestionar productos</button>
+                <button class="action-button">Gestionar productos</button>
             </a>
-            <a href="ConsultProvide.html" class="action-card">
-                
+            <a href="ConsultProvide.html" class="action-card" id="providerLink">
                 <i class="fas fa-truck"></i>
-                <button class="action-button">Gestionar proovedores</button>
+                <button class="action-button">Gestionar proveedores</button>
             </a>
-            <a href="ConsultarUsuarios.html" class="action-card">
-             
+            <a href="ConsultarUsuarios.html" class="action-card" id="usersLink">
                 <i class="fas fa-users"></i>
                 <button class="action-button">Gestionar Usuarios</button>
             </a>
         </div>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Obtener el rol del usuario desde localStorage
+            const userRole = localStorage.getItem('userRole'); 
+            console.log('Rol recuperado de localStorage:', userRole); // Debugging
+    
+            // Verificar si el usuario tiene el rol adecuado para acceder al menú principal
+            if (userRole !== 'ROLE_ADMIN') {  // Solo los usuarios con rol 'ROLE_ADMIN' pueden acceder
+                alert('Acceso denegado. No tienes permisos suficientes para ver esta página.');
+                window.location.href = 'login.html';  // Redirigir a la página de inicio de sesión
+                return;
+            }
+    
+            // Si el usuario tiene el rol adecuado, permitir la carga normal
+            console.log('Acceso permitido para ROLE_ADMIN');
+        });
+    </script>
+    
+    
 </body>
 </html>

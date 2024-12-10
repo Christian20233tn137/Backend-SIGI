@@ -20,14 +20,15 @@ document.querySelector('.login-form').addEventListener('submit', async (event) =
             // Guardar el token en localStorage
             localStorage.setItem('authToken', token);
 
-            // Decodificar el token para obtener el ID del usuario
-            const userId = getUserIdFromToken(token);
+            // Decodificar el token para obtener el ID y el rol del usuario
+            const { userId, role } = getUserIdAndRoleFromToken(token);
 
-            // Guardar el ID en localStorage
+            // Guardar el ID y el rol en localStorage
             localStorage.setItem('userId', userId);
+            localStorage.setItem('userRole', role);
 
-            // Redirigir al menú
-            window.location.href = './Menu.html';
+            // Redirigir según el rol
+            redirectUserByRole(role);
         } else {
             // Manejo de errores
             const errorText = await response.text();
@@ -39,8 +40,19 @@ document.querySelector('.login-form').addEventListener('submit', async (event) =
     }
 });
 
-// Función para decodificar el token JWT
-function getUserIdFromToken(token) {
+// Función para redirigir según el rol del usuario
+function redirectUserByRole(role) {
+    if (role === "ROLE_ADMIN") {
+        window.location.href = './Menu.html';
+    } else if (role === "ROLE_CONSULTOR") {
+        window.location.href = './ConsultarUsuariosProductos.html';
+    } else {
+        alert('Rol no reconocido');
+    }
+}
+
+// Función para decodificar el token JWT y obtener el ID y el rol
+function getUserIdAndRoleFromToken(token) {
     try {
         // Dividir el token en sus partes
         const payload = token.split('.')[1];
@@ -51,11 +63,11 @@ function getUserIdFromToken(token) {
         // Convertir el payload en un objeto JSON
         const payloadObject = JSON.parse(decodedPayload);
 
-        // Retornar el ID del usuario
-        if (payloadObject.id) {
-            return payloadObject.id; // Asegúrate de que el backend incluya el `id` como parte del payload
+        // Retornar el ID y el rol del usuario
+        if (payloadObject.id && payloadObject.role) {
+            return { userId: payloadObject.id, role: payloadObject.role }; 
         } else {
-            console.error('El ID no está presente en el token JWT.');
+            console.error('El ID o el rol no están presentes en el token JWT.');
             alert('Error al procesar el token de autenticación.');
             return null;
         }
