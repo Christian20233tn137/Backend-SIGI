@@ -1,82 +1,69 @@
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', () => {
+  const form = document.getElementById('change-password-form');
+  const passwordInput = document.getElementById('password');
+  const confirmPasswordInput = document.getElementById('confirm-password');
+  const messageDiv = document.getElementById('message');
+  const messageText = document.getElementById('message-text');
 
-    const email = localStorage.getItem('email');
-    const token = localStorage.getItem('jwt');
-  
-    if (email) {
-      document.getElementById('email').value = email;
-    } else {
-      window.location.href = '../index.html';
-    }
-  
-    if (!token) {
-      window.location.href = '../index.html';
-    }
-  
-    const changePasswordForm = document.getElementById('change-password-form');
-    const messageElement = document.getElementById('message');
-    const messageText = document.getElementById('message-text');
-  
-    function showMessage(type, message) {
-      messageElement.className = `alert alert-${type}`;
-      messageText.textContent = message;
-      messageElement.style.display = 'block';
-  
-      setTimeout(() => {
-        messageElement.style.display = 'none';
-      }, 5000);
-    }
-  
-    changePasswordForm.addEventListener('submit', async function (event) {
-      event.preventDefault();
-  
-      const email = document.getElementById('email').value.trim();
-      const password = document.getElementById('password').value.trim();
-      const confirmPassword = document.getElementById('confirm-password').value.trim();
-  
-      if (!password || password.length < 6) {
-        showMessage('warning', 'La contraseña debe tener al menos 6 caracteres.');
-        return;
-      }
-  
+  // Recuperar el correo del localStorage (de pasos anteriores)
+  const email = localStorage.getItem('validatedEmail');
+  if (!email) {
+      alert('Correo no encontrado. Por favor, regrese y valide su correo.');
+      window.location.href = 'RecoverPass.html'; // Redirigir a la página inicial si no hay correo
+      return;
+  }
+
+  form.addEventListener('submit', async (event) => {
+      event.preventDefault(); // Prevenir el envío predeterminado del formulario
+
+      const password = passwordInput.value.trim();
+      const confirmPassword = confirmPasswordInput.value.trim();
+
+      // Validar que las contraseñas coincidan
       if (password !== confirmPassword) {
-        showMessage('warning', 'Las contraseñas no coinciden.');
-        return;
+          showMessage('Las contraseñas no coinciden. Por favor, inténtalo de nuevo.', 'danger');
+          return;
       }
-  
+
+      // Validar que la contraseña no esté vacía y cumpla con los requisitos mínimos
+      if (password.length < 6) {
+          showMessage('La contraseña debe tener al menos 6 caracteres.', 'danger');
+          return;
+      }
+
       try {
-        showMessage('info', 'Cambiando la contraseña, por favor espera...');
-  
-        const response = await fetch('http://localhost:8080/user/change-pass', {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-          },
-          body: JSON.stringify({
-            email: email,
-            password: password
-          })
-        });
-  
-        const result = await response.json();
-  
-        if (response.ok) {
-          showMessage('success', 'Contraseña actualizada correctamente. Ahora puedes iniciar sesión con tu nueva contraseña.');
-          setTimeout(() => {
-  
-            localStorage.removeItem('jwt');
-            localStorage.removeItem('userId');
-            localStorage.removeItem('email');
-            localStorage.removeItem('expiration');
-  
-            window.location.href = '../index.html';
-          }, 3000);
-        } else {
-          showMessage('danger', result.text || 'Hubo un problema al cambiar la contraseña.');
-        }
+          // Enviar la solicitud al servidor
+          const response = await fetch('http://localhost:8080/consultor/change-password', {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({ email, password })
+          });
+
+          if (response.ok) {
+              // Mostrar mensaje de éxito
+              showMessage('Contraseña actualizada con éxito.', 'success');
+              // Opcional: Redirigir al usuario a la página de inicio de sesión
+              setTimeout(() => {
+                  window.location.href = 'login.html';
+              }, 3000);
+          } else {
+              // Manejar errores del servidor
+              const errorData = await response.json();
+              showMessage(errorData.message || 'Ocurrió un error al actualizar la contraseña.', 'danger');
+          }
       } catch (error) {
-        showMessage('danger', 'Error al cambiar la contraseña. Intenta nuevamente más tarde.');
+          // Manejo de errores en el cliente
+          console.error('Error en el cliente:', error);
+          showMessage('No se pudo conectar con el servidor. Inténtelo más tarde.', 'danger');
       }
-    });
   });
+
+  // Función para mostrar mensajes en la interfaz
+  function showMessage(message, type) {
+      messageText.textContent = message;
+      messageDiv.className = `alert alert-${type} alert-dismissible`; // Cambiar el tipo de alerta según el mensaje
+      messageDiv.style.display = 'block'; // Mostrar el mensaje
+  }
+});

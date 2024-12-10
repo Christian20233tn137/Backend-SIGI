@@ -24,6 +24,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Manejar la respuesta del servidor
             if (response.ok) {
+                // Guardar el correo en localStorage
+                localStorage.setItem('validatedEmail', correo);
+
                 // Redirigir al usuario a la página Code.html si el envío fue exitoso
                 window.location.href = 'Code.html';
             } else {
