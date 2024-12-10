@@ -1,33 +1,44 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Solicitud de Cambio de Contraseña</title>
-    
-    <link rel="stylesheet" href="css/ChangePass.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="css/ChangePass.css">
+
+  <title>Cambiar Contraseña</title>
 </head>
 <body>
-    
-    <img src="img/fondo1.png" alt="Fondo" class="background">
-    <div class="container">
-        <!-- Header -->
-        <header class="header">
-            
-            <h1>SOLICITUD DE CAMBIO DE CONTRASEÑA</h1>
-        </header>
+<div class="container-fluid">
 
-        <!-- Main Content -->
-        <main class="content">
-            <p>INGRESE EL CORREO ELECTRÓNICO ASOCIADO A LA CUENTA</p>
-            <form class="form">
-                <div class="form-group">
-                    <label for="correo">CORREO ELECTRÓNICO*</label>
-                    <input type="email" id="correo" name="correo" required>
-                </div>
-                <button type="submit" class="submit-button">ENVIAR CÓDIGO</button>
-            </form>
-        </main>
-    </div>
+  <main class="main-content">
+    <form class="mt-5" id="change-password-form">
+      <h2>Cambiar Contraseña</h2>
+
+      <div id="email-section">
+        <label for="email">Correo electrónico</label>
+        <input type="email" id="email" name="email" placeholder="Ingresa tu Correo" required readonly>
+        <br><br>
+      </div>
+
+      <div id="password-section">
+        <label for="password">Nueva Contraseña:</label>
+        <input type="password" id="password" name="password" placeholder="Ingresa tu nueva contraseña" required>
+        <br><br>
+
+        <label for="confirm-password">Confirma tu nueva contraseña:</label>
+        <input type="password" id="confirm-password" name="confirm-password" placeholder="Confirma tu nueva contraseña" required>
+        <br><br>
+
+        <button type="submit" class="btn btn-primary">Actualizar Contraseña</button>
+      </div>
+
+      <!-- Mensajes de éxito o error -->
+      <div id="message" class="alert alert-dismissible" role="alert" style="display:none;">
+        <span id="message-text"></span>
+      </div>
+    </form>
+  </main>
+  <script src="js/ChangePass.js"></script>
+</div>
 </body>
 </html>
