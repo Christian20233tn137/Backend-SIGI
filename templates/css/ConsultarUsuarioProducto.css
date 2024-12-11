@@ -10,7 +10,7 @@ body, html {
     height: 100vh; /* Asegura que el fondo ocupe la altura completa */
 }
 
-.background{
+.background {
     position: fixed;
     top: 0;
     left: 0;
@@ -19,29 +19,38 @@ body, html {
     z-index: -1; /* Envía la imagen al fondo */
 }
 
+/* Contenedor principal */
+.content {
+    margin-left: 70px; /* Corresponde al ancho inicial de la sidebar */
+    transition: margin-left 0.3s ease; /* Suaviza la transición cuando se expande la sidebar */
+}
+
+.sidebar:hover ~ .content {
+    margin-left: 250px; /* Ajusta el espacio cuando la sidebar está expandida */
+}
+
+/* Sidebar */
 .sidebar {
     width: 70px; /* Sidebar compacta */
     background: linear-gradient(to bottom, #1f5a51, #1f5a51);
-    height: calc(100% - 1px);
+    height: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
     box-shadow: 2px 0 5px rgba(255, 255, 255, 0.992);
-    transition: width 0.3s;
+    transition: width 0.3s ease;
     position: fixed;
     overflow: hidden;
-    top: 0px;
+    top: 0;
     z-index: 999;
 }
-
-
-
 
 .sidebar:hover {
     width: 250px; /* Sidebar expandida */
 }
 
+/* Logo */
 .logo {
     display: flex;
     align-items: center;
@@ -65,6 +74,7 @@ body, html {
     display: block;
 }
 
+/* Menú */
 .menu {
     list-style: none;
     padding: 0;
@@ -104,6 +114,7 @@ body, html {
     display: block;
 }
 
+/* Perfil */
 .profile {
     display: flex;
     align-items: center;
@@ -145,30 +156,16 @@ body, html {
     .sidebar:hover {
         width: 180px;
     }
+
+    .content, .form-container {
+        margin-left: 50px; /* Reduce el espacio para dispositivos más pequeños */
+    }
+    .sidebar:hover ~ .content, .sidebar:hover ~ .form-container {
+        margin-left: 180px; /* Ajuste para sidebar expandida en pantallas pequeñas */
+    }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* Contenedor del formulario */
+/* Formulario */
 .form-container {
     width: 100%;
     max-width: 800px;
@@ -188,7 +185,7 @@ body, html {
     font-size: 1.5rem;
 }
 
-/* Search Bar Styles */
+/* Estilos del buscador */
 .search-bar {
     display: flex;
     justify-content: center;
@@ -206,27 +203,14 @@ body, html {
     width: 100%;
     box-sizing: border-box;
 }
-.search-button, .filter-button {
+
+.search-button, .filter-button, .plus-button {
     padding: 10px 20px;
     background-color: #2c786c;
     color: white;
     border: none;
     border-radius: 4px;
     cursor: pointer;
-    font-size: 16px;
-}
-
-.plus-button{
-    padding: 10px 20px;
-    background-color: #2c786c;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 16px;
-}
-
-.search-button i {
     font-size: 16px;
 }
 
@@ -234,104 +218,162 @@ body, html {
     background-color: #1f5a51;
 }
 
-/* Formulario */
-.registration-form {
-    padding: 20px;
-}
-
-/* Filas del formulario */
-.form-row {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 15px;
-}
-
-/* Grupos de formulario */
-.form-group {
-    width: 48%;
-    display: flex;
-    flex-direction: column;
-}
-
-/* Etiquetas */
-.form-group label {
-    margin-bottom: 5px;
-    font-size: 0.9rem;
-    color: #333;
-}
-
-/* Inputs */
-.form-group input {
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 1rem;
-}
-
-/* Botón del formulario */
-.form-footer {
-    text-align: center;
-    margin-top: 20px;
-}
-
-.form-footer button {
-    background-color: #006d68;
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    font-size: 1rem;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.form-footer button:hover {
-    background-color: #004d4a;
-}
-
-
-
-
-/* Table Styles */
-.provider-table {
-    width: 90%;
+/* Estilos de la tabla */
+.productos-table {
+    width: 97%;
     border-collapse: collapse;
     margin: 20px auto;
     max-width: 1200px;
 }
 
-.provider-table thead {
+.productos-table thead {
     background-color: #2c786c;
     color: white;
 }
 
-.provider-table th {
-    border: 3px solid #2c786c;
-    padding: 10px;
-    text-align: center;
-    font-size: 16px;
-}
-
-.product-table  td a, td button {
-    display: inline-flex; 
+.product-table td a, td button {
+    display: inline-flex;
     align-items: center;
     justify-content: center;
     padding: 8px 12px; 
     margin: 5px; 
     border: none;
-    border-radius: 5px; 
+    border-radius: 10px; 
     text-decoration: none; 
     font-size: 0.9rem;
     cursor: pointer;
-    transition: all 0.3s ease-in-out; 
+    transition: all 0.3s ease-in-out;
 }
 
-.provider-table td {
+.productos-table td {
     height: 50px;
 }
 
+/* Botones de la tabla */
+.action-button {
+    background-color: #0804ec;
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
 
+.habilitar {
+    background-color: #20d851;
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
 
+.habilitar:hover {
+    background-color: #04771f;
+}
 
+.deshabilitar {
+    background-color: #d82020;
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
 
+.deshabilitar:hover {
+    background-color: #980505;
+}
 
+.action-button:hover {
+    background-color: #1f5a51;
+}
+
+/* Estilo inicial del modal */
+.modal {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    max-width: 400px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    overflow: hidden;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+/* Mostrar modal cuando se agrega la clase modal-show */
+.modal.modal-show {
+    display: block;
+}
+
+/* Animación de entrada */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -55%);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+    }
+}
+
+/* Encabezado del modal */
+.modal-header {
+    background-color: #006d68;
+    color: white;
+    padding: 15px;
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+/* Contenido del modal */
+.modal-content {
+    padding: 10px;
+}
+
+.modal-body input {
+    padding: 12px; 
+    font-size: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Botón de cierre */
+.close-button {
+    color: #000;
+    font-size: 1.2rem;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+}
+
+/* Botones del modal */
+.modal-footer {
+    text-align: center;
+    padding: 15px;
+}
+
+.save-button, .cancel-button {
+    padding: 10px 20px;
+    background-color: #2c786c;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.save-button:hover, .cancel-button:hover {
+    background-color: #1f5a51;
+}

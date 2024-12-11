@@ -33,12 +33,6 @@ document.addEventListener('DOMContentLoaded', function () {
         productosFiltrados.forEach((producto, index) => {
             const row = document.createElement('tr');
 
-            // Columna #
-            const numberCell = document.createElement('th');
-            numberCell.scope = 'row';
-            numberCell.textContent = index + 1;
-            row.appendChild(numberCell);
-
             // Columna Nombre
             const nameCell = document.createElement('td');
             nameCell.textContent = producto.nombre;
