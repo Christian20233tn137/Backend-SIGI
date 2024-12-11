@@ -75,8 +75,8 @@ document.addEventListener('DOMContentLoaded', function () {
     function openEditModal(usuario) {
         document.getElementById('usuarioId').value = usuario.id;
         document.getElementById("usuarioName").value = usuario.name;
-        document.getElementById("usuarioLastName").value = usuario.lastName;
-        document.getElementById("usuarioPhone").value = usuario.phone;
+        document.getElementById("usuarioLastName").value = usuario.lastname;
+        document.getElementById("usuarioPhone").value = usuario.telephone;
         document.getElementById("usuarioEmail").value = usuario.email;
         document.getElementById("usuarioPassword").value = usuario.password;
         document.getElementById("usuarioPasswordConfirm").value = usuario.password2;
