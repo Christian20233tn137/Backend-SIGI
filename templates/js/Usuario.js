@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', function () {
     console.log(token);
 
     function loadTable() {
-        fetch(API_URL, {
+        fetch("http://localhost:8080/usuario/all", {
             method: "GET",
             headers: {
                 "Authorization": "Bearer " + token,
@@ -113,82 +113,84 @@ document.addEventListener('DOMContentLoaded', function () {
 
     document.getElementById('registerButton').addEventListener('click', function (event) {
         event.preventDefault();
-
-        // Alerta de confirmación
+    
         const confirmRegistration = confirm('¿Está seguro de que desea registrar este usuario?');
         if (!confirmRegistration) {
             return;
         }
-
+    
         const userId = document.getElementById('usuarioId').value;
         const usuarioName = document.getElementById('usuarioName').value;
         const usuarioLastName = document.getElementById('usuarioLastName').value;
         const usuarioPhone = document.getElementById('usuarioPhone').value;
         const usuarioEmail = document.getElementById('usuarioEmail').value;
         const usuarioPassword = document.getElementById('usuarioPassword').value;
-
-        let userData = {
+    
+        if (!usuarioName || !usuarioLastName || !usuarioPhone || !usuarioEmail || !usuarioPassword) {
+            alert('Por favor, complete todos los campos.');
+            return;
+        }
+    
+        const userData = {
             name: usuarioName,
             lastname: usuarioLastName,
             email: usuarioEmail,
             telephone: usuarioPhone,
             password: usuarioPassword,
         };
-
+    
         if (userId) {
-            updateUser(userId, userData);
+            // PUT para actualizar
+            fetch(`${API_URL}/${userId}`, {
+                method: 'PUT',
+                headers: {
+                    "Authorization": "Bearer " + token,
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(userData)
+            })
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    throw new Error('Error al actualizar el usuario.');
+                }
+            })
+            .then(() => {
+                alert('Usuario actualizado exitosamente.');
+                closeModal();
+                loadTable();
+            })
+            .catch(error => {
+                alert('Error al actualizar los datos: ' + error.message);
+            });
         } else {
-            createUser(userData);
+            // POST para crear
+            fetch(`${API_URL}/save`, {
+                method: 'POST',
+                headers: {
+                    "Authorization": "Bearer " + token,
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(userData)
+            })
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    throw new Error('Error al registrar el usuario.');
+                }
+            })
+            .then(() => {
+                alert('Usuario registrado exitosamente.');
+                closeModal();
+                loadTable();
+            })
+            .catch(error => {
+                alert('Error al guardar los datos: ' + error.message);
+            });
         }
     });
-
-    function createUser(userData) {
-        fetch(API_URL, {
-            method: 'POST',
-            headers: {
-                "Authorization": "Bearer " + token,
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(userData)
-        })
-            .then(response => {
-                if (response.ok) {
-                    alert('Usuario registrado exitosamente.');
-                    closeModal();
-                    loadTable();
-                } else {
-                    alert('Error al registrar el usuario.');
-                }
-            })
-            .catch(error => {
-                console.error('Error al guardar el usuario:', error);
-            });
-    }
-
-    function updateUser(userId, userData) {
-        const endpoint = `${API_URL}/${userId}`;
-
-        fetch(endpoint, {
-            method: 'PUT',
-            headers: {
-                "Authorization": "Bearer " + token,
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(userData)
-        })
-            .then(response => {
-                if (response.ok) {
-                    alert('Usuario actualizado exitosamente.');
-                    closeModal();
-                    loadTable();
-                } else {
-                    alert('Error al actualizar el usuario.');
-                }
-            })
-            .catch(error => {
-                console.error('Error al actualizar el usuario:', error);
-            });
-    }
 
     loadTable();
 
